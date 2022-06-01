@@ -1,4 +1,4 @@
-package ru.otus.service;
+package ru.otus.dao;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -6,6 +6,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import ru.otus.dao.QuestionsDao;
 import ru.otus.domain.AnswerOptions;
 import ru.otus.domain.Question;
 import ru.otus.exceptions.QuestionsLoadingException;
@@ -21,10 +22,10 @@ import java.util.List;
  * @author Прохоренко Виктор
  */
 @Service
-public class QuestionsServiceImpl implements QuestionsService {
+public class QuestionsDaoImpl implements QuestionsDao {
     private final Resource questions;
 
-    public QuestionsServiceImpl(@Value("${questions-file}") Resource questions) {
+    public QuestionsDaoImpl(@Value("${questions-file}") Resource questions) {
         this.questions = questions;
     }
 
@@ -60,10 +61,7 @@ public class QuestionsServiceImpl implements QuestionsService {
         answers.add(csvRecord.get("ThirdAnswer"));
         answers.add(csvRecord.get("ForthAnswer"));
         String rightAnswer = csvRecord.get("FirstAnswer");
-        return AnswerOptions.builder()
-                .answers(answers)
-                .rightAnswer(rightAnswer)
-                .build();
+        return new AnswerOptions(answers, rightAnswer);
     }
 
     private CSVParser getParser(Resource questions) throws IOException {

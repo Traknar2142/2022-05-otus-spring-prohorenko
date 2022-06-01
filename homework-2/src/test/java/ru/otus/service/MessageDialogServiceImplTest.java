@@ -12,12 +12,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Прохоренко Виктор
  */
 @DisplayName("Сервис ввода/вывода сообщений должен")
-public class TestingMessageDialogServiceImplTest {
+public class MessageDialogServiceImplTest {
     private TestingMessageDialogServiceImpl testingMessageDialogService;
 
     @BeforeEach
     void setUp(){
-        testingMessageDialogService = new TestingMessageDialogServiceImpl(System.in);
+        testingMessageDialogService = new TestingMessageDialogServiceImpl(System.in, System.out);
     }
 
     @Test
@@ -25,7 +25,7 @@ public class TestingMessageDialogServiceImplTest {
     void shouldReadStringInputStream(){
         String expected = "some_string";
         ByteArrayInputStream in = new ByteArrayInputStream("some_string".getBytes());
-        testingMessageDialogService = new TestingMessageDialogServiceImpl(in);
+        testingMessageDialogService = new TestingMessageDialogServiceImpl(in, System.out);
         System.setIn(in);
         String actual = testingMessageDialogService.inputMessage();
         assertThat(actual).isEqualTo(expected);

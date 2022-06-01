@@ -3,7 +3,7 @@ package ru.otus.service;
 /**
  * @author Прохоренко Виктор
  */
-public interface TestingMessageDialogService {
+public interface MessageDialogService {
     String inputMessage();
 
     String outputMessage(String message);
