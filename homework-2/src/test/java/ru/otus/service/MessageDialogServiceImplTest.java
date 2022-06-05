@@ -34,7 +34,6 @@ public class MessageDialogServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     @DisplayName("Читать сроку из входного потока")
     void shouldReadStringInputStream() {
         String expected = "some_string";
