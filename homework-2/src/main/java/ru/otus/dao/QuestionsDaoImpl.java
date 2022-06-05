@@ -48,10 +48,10 @@ public class QuestionsDaoImpl implements QuestionsDao {
     }
 
     private Question getQuestion(CSVRecord csvRecord) {
-        return Question.builder()
-                .questionMessage(csvRecord.get("Question"))
-                .answerOptions(getAnswerOptions(csvRecord))
-                .build();
+        String questionMessage = csvRecord.get("Question");
+        AnswerOptions answerOptions = getAnswerOptions(csvRecord);
+
+        return new Question(questionMessage, answerOptions);
     }
 
     private AnswerOptions getAnswerOptions(CSVRecord csvRecord) {

@@ -1,10 +1,16 @@
 package ru.otus.service;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,30 +18,35 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Прохоренко Виктор
  */
 @DisplayName("Сервис ввода/вывода сообщений должен")
+@ExtendWith(MockitoExtension.class)
 public class MessageDialogServiceImplTest {
-    private TestingMessageDialogServiceImpl testingMessageDialogService;
+    private InputStream in;
+    @Mock
+    private PrintStream output;
+
+    private MessageDialogServiceImpl messageDialogService;
+
 
     @BeforeEach
-    void setUp(){
-        testingMessageDialogService = new TestingMessageDialogServiceImpl(System.in, System.out);
+    void setUp() {
+        in = new ByteArrayInputStream("some_string".getBytes());
+        messageDialogService = new MessageDialogServiceImpl(in, output);
     }
 
     @Test
+    @SneakyThrows
     @DisplayName("Читать сроку из входного потока")
-    void shouldReadStringInputStream(){
+    void shouldReadStringInputStream() {
         String expected = "some_string";
-        ByteArrayInputStream in = new ByteArrayInputStream("some_string".getBytes());
-        testingMessageDialogService = new TestingMessageDialogServiceImpl(in, System.out);
-        System.setIn(in);
-        String actual = testingMessageDialogService.inputMessage();
+        String actual = messageDialogService.inputMessage();
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     @DisplayName("Вывести строку исходящего потока")
-    void shouldReturnStringOutputStream(){
+    void shouldReturnStringOutputStream() {
         String expected = "some_string";
-        String actual = testingMessageDialogService.outputMessage(expected);
+        String actual = messageDialogService.outputMessage(expected);
         assertThat(actual).isEqualTo(expected);
     }
 }

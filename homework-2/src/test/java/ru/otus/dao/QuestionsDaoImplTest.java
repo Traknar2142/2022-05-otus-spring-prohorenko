@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 @ExtendWith(MockitoExtension.class)
 class QuestionsDaoImplTest {
     @Mock
-    Resource questions;
+    private Resource questions;
     @InjectMocks
     private QuestionsDaoImpl questionsDao;
 
@@ -41,17 +41,16 @@ class QuestionsDaoImplTest {
 
         List<Question> expectedQuestions = getExpectedQuestionList();
         List<Question> questionsActual = questionsDao.getQuestions();
-        assertNotNull(questionsActual);
-        assertThat(expectedQuestions.get(0)).isEqualTo(questionsActual.get(0));
-
+        assertThat(expectedQuestions)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactlyInAnyOrderElementsOf(questionsActual);
     }
 
     private List<Question> getExpectedQuestionList() {
         AnswerOptions answerOptions = new AnswerOptions(new ArrayList<>(Arrays.asList("5", "4", "3", "2")), "5");
-        Question question = Question.builder()
-                .questionMessage("How many fingers are on the hand?")
-                .answerOptions(answerOptions)
-                .build();
+        String questionMessage = "How many fingers are on the hand?";
+        Question question = new Question(questionMessage, answerOptions);
         return Collections.singletonList(question);
     }
 }

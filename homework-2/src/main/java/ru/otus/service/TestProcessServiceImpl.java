@@ -24,10 +24,11 @@ public class TestProcessServiceImpl implements TestProcessService {
 
     public TestProcessServiceImpl(QuestionsDao questionsDao,
                                   MessageTransformer transformer,
-                                  @Value ("${minimum-right-answers}") int passingScore) {
+                                  @Value ("${minimum-right-answers}") int passingScore,
+                                  MessageDialogService messageDialogService) {
         this.questionsDao = questionsDao;
         this.transformer = transformer;
-        this.messageDialogService = new TestingMessageDialogServiceImpl(System.in, System.out);
+        this.messageDialogService = messageDialogService;
         this.passingScore = passingScore;
     }
 
@@ -36,7 +37,7 @@ public class TestProcessServiceImpl implements TestProcessService {
         try {
             executeTest();
         } catch (QuestionsLoadingException e) {
-            System.out.println("Ошибка чтения файла с вопросами " + e.getMessage());
+            messageDialogService.outputMessage("Ошибка чтения файла с вопросами " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -62,10 +63,7 @@ public class TestProcessServiceImpl implements TestProcessService {
         String firstName = messageDialogService.inputMessage();
         messageDialogService.outputMessage(ASK_LAST_NAME);
         String lastName = messageDialogService.inputMessage();
-        return User.builder()
-                .firstName(firstName)
-                .lastName(lastName)
-                .build();
+        return new User(firstName, lastName);
     }
 
     private boolean answerIsRight(String answerOption, Question question){

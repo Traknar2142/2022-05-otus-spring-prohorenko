@@ -59,10 +59,8 @@ public class MessageTransformerImplTest {
     }
 
     private Question getQuestion() {
+        String questionMessage = "How many fingers are on the hand?";
         AnswerOptions answerOptions = new AnswerOptions(new ArrayList<>(Arrays.asList("5", "4", "3", "2")), "5");
-        return Question.builder()
-                .questionMessage("How many fingers are on the hand?")
-                .answerOptions(answerOptions)
-                .build();
+        return new Question(questionMessage, answerOptions);
     }
 }
