@@ -1,0 +1,3 @@
+questions-file: classpath:/questions.csv
+minimum-right-answers: 3
+locale: Locale.ENGLISH
