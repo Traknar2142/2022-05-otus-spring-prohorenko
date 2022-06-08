@@ -2,6 +2,7 @@ package ru.otus.transformer;
 
 import org.springframework.stereotype.Service;
 import ru.otus.domain.Question;
+import ru.otus.service.LocalizationMessageService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,11 @@ import java.util.List;
  */
 @Service
 public class MessageTransformerImpl implements MessageTransformer {
-    private static final String OPTION_NOT_FOUND = "Option not found";
+    private final LocalizationMessageService localizationMessageService;
+
+    public MessageTransformerImpl(LocalizationMessageService localizationMessageService) {
+        this.localizationMessageService = localizationMessageService;
+    }
 
     @Override
     public String transformOutputQuestionWithAnswerOptions(Question question) {
@@ -27,12 +32,13 @@ public class MessageTransformerImpl implements MessageTransformer {
     }
     @Override
     public String transformAnswerOptionString(String answer, String outputQuestionWithAnswerOptions) {
+        String optionNotFound = localizationMessageService.getLocalizationMessage("option-not-found");
         String content = outputQuestionWithAnswerOptions
                 .lines()
                 .filter(line -> line.contains(answer + ")"))
                 .findFirst()
-                .orElse(OPTION_NOT_FOUND);
-        if (!content.equals(OPTION_NOT_FOUND)) {
+                .orElse(optionNotFound);
+        if (!content.equals(optionNotFound)) {
             StringBuilder builder = new StringBuilder(content);
             content = builder.substring(3, builder.length());
         }
