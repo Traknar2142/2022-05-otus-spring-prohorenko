@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
@@ -12,6 +13,8 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Прохоренко Виктор
@@ -44,7 +47,7 @@ public class MessageDialogServiceImplTest {
     @DisplayName("Вывести строку исходящего потока")
     void shouldReturnStringOutputStream() {
         String expected = "some_string";
-        String actual = messageDialogService.outputMessage(expected);
-        assertThat(actual).isEqualTo(expected);
+        messageDialogService.outputMessage(expected);
+        verify(output, times(1)).println(expected);
     }
 }

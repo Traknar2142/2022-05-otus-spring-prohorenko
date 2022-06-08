@@ -18,18 +18,19 @@ public class TestProcessServiceImpl implements TestProcessService {
     private final QuestionsDao questionsDao;
     private final MessageTransformer transformer;
     private final MessageDialogService messageDialogService;
+    private final LocalizationMessageService localizationMessageService;
     private final int passingScore;
-    private final static String ASK_FIRST_NAME = "Input your first name";
-    private final static String ASK_LAST_NAME = "Input your last name";
 
     public TestProcessServiceImpl(QuestionsDao questionsDao,
                                   MessageTransformer transformer,
-                                  @Value ("${minimum-right-answers}") int passingScore,
-                                  MessageDialogService messageDialogService) {
+                                  @Value("${minimum-right-answers}") int passingScore,
+                                  MessageDialogService messageDialogService,
+                                  LocalizationMessageService localizationMessageService) {
         this.questionsDao = questionsDao;
         this.transformer = transformer;
         this.messageDialogService = messageDialogService;
         this.passingScore = passingScore;
+        this.localizationMessageService = localizationMessageService;
     }
 
     @Override
@@ -37,7 +38,8 @@ public class TestProcessServiceImpl implements TestProcessService {
         try {
             executeTest();
         } catch (QuestionsLoadingException e) {
-            messageDialogService.outputMessage("Ошибка чтения файла с вопросами " + e.getMessage());
+            String errorMessage = localizationMessageService.getLocalizationMessage("error-file-read-message");
+            messageDialogService.outputMessage(errorMessage + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -59,9 +61,11 @@ public class TestProcessServiceImpl implements TestProcessService {
     }
 
     private User introduceUser() {
-        messageDialogService.outputMessage(ASK_FIRST_NAME);
+        String askFirstName = localizationMessageService.getLocalizationMessage("ask-first-name");
+        String askLastName = localizationMessageService.getLocalizationMessage("ask-last-name");
+        messageDialogService.outputMessage(askFirstName);
         String firstName = messageDialogService.inputMessage();
-        messageDialogService.outputMessage(ASK_LAST_NAME);
+        messageDialogService.outputMessage(askLastName);
         String lastName = messageDialogService.inputMessage();
         return new User(firstName, lastName);
     }
@@ -72,10 +76,13 @@ public class TestProcessServiceImpl implements TestProcessService {
 
     private void showResult(int countOfRightAnswers){
         if (countOfRightAnswers >= passingScore){
-            messageDialogService.outputMessage("Test passed successfully");
+            String testSuccessfulMessage = localizationMessageService.getLocalizationMessage("test-successful");
+            messageDialogService.outputMessage(testSuccessfulMessage);
         }else{
-            messageDialogService.outputMessage("Test failed");
+            String testFailedMessage = localizationMessageService.getLocalizationMessage("test-failed");
+            messageDialogService.outputMessage(testFailedMessage);
         }
-        messageDialogService.outputMessage("Your score " + countOfRightAnswers);
+        String scoreMessage = localizationMessageService.getLocalizationMessage("your-score");
+        messageDialogService.outputMessage(scoreMessage + " " + countOfRightAnswers);
     }
 }
