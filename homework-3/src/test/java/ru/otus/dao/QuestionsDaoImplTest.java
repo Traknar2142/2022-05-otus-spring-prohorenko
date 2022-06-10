@@ -29,33 +29,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 class QuestionsDaoImplTest {
     @Mock
     private Resource questions;
-    @Mock
-    private LocalizationMessageService localizationMessageService;
     @InjectMocks
     private QuestionsDaoImpl questionsDao;
-
-    private final static String QUESTION = "How many fingers are on the hand?";
-    private final static String ANSWER_1 = "5";
-    private final static String ANSWER_2 = "4";
-    private final static String ANSWER_3 = "3";
-    private final static String ANSWER_4 = "2";
 
     @Test
     @SneakyThrows
     @DisplayName("Сформировать список вопросов с вариантами ответов")
     void shouldReturnCorrectQuestionListFromCsv() {
         ByteArrayInputStream in = new ByteArrayInputStream("How many fingers are on the hand?,5,4,3,2".getBytes());
-
         Mockito.when(questions.getInputStream()).thenReturn(in);
-        Mockito.when(localizationMessageService.getLocalizationMessage(QUESTION)).thenReturn(QUESTION);
-        Mockito.when(localizationMessageService.getLocalizationMessage(ANSWER_1)).thenReturn(ANSWER_1);
-        Mockito.when(localizationMessageService.getLocalizationMessage(ANSWER_2)).thenReturn(ANSWER_2);
-        Mockito.when(localizationMessageService.getLocalizationMessage(ANSWER_3)).thenReturn(ANSWER_3);
-        Mockito.when(localizationMessageService.getLocalizationMessage(ANSWER_4)).thenReturn(ANSWER_4);
 
         List<Question> expectedQuestions = getExpectedQuestionList();
         List<Question> questionsActual = questionsDao.getQuestions();
-
         assertThat(expectedQuestions)
                 .isNotNull()
                 .isNotEmpty()
@@ -63,9 +48,9 @@ class QuestionsDaoImplTest {
     }
 
     private List<Question> getExpectedQuestionList() {
-        List<String> answers = new ArrayList<>(Arrays.asList(ANSWER_1, ANSWER_2, ANSWER_3, ANSWER_4));
-        AnswerOptions answerOptions = new AnswerOptions((answers), ANSWER_1);
-        Question question = new Question(QUESTION, answerOptions);
+        AnswerOptions answerOptions = new AnswerOptions(new ArrayList<>(Arrays.asList("5", "4", "3", "2")), "5");
+        String questionMessage = "How many fingers are on the hand?";
+        Question question = new Question(questionMessage, answerOptions);
         return Collections.singletonList(question);
     }
 }

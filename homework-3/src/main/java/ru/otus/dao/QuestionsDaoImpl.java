@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import ru.otus.domain.AnswerOptions;
 import ru.otus.domain.Question;
 import ru.otus.exceptions.QuestionsLoadingException;
-import ru.otus.service.LocalizationMessageService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,11 +23,9 @@ import java.util.List;
 @Service
 public class QuestionsDaoImpl implements QuestionsDao {
     private final Resource questions;
-    private final LocalizationMessageService localizationMessageService;
 
-    public QuestionsDaoImpl(@Value("${questions-file}") Resource questions, LocalizationMessageService localizationMessageService) {
+    public QuestionsDaoImpl(@Value("#{'${file-path}' + '${file-name}' + '-' + systemProperties['user.language']  + '.csv'}") Resource questions) {
         this.questions = questions;
-        this.localizationMessageService = localizationMessageService;
     }
 
     @Override
@@ -50,7 +47,7 @@ public class QuestionsDaoImpl implements QuestionsDao {
     }
 
     private Question getQuestion(CSVRecord csvRecord) {
-        String questionMessage = localizationMessageService.getLocalizationMessage(csvRecord.get("Question"));
+        String questionMessage = csvRecord.get("Question");
         AnswerOptions answerOptions = getAnswerOptions(csvRecord);
 
         return new Question(questionMessage, answerOptions);
@@ -58,11 +55,11 @@ public class QuestionsDaoImpl implements QuestionsDao {
 
     private AnswerOptions getAnswerOptions(CSVRecord csvRecord) {
         List<String> answers = new ArrayList<>();
-        answers.add(localizationMessageService.getLocalizationMessage(csvRecord.get("FirstAnswer")));
-        answers.add(localizationMessageService.getLocalizationMessage(csvRecord.get("SecondAnswer")));
-        answers.add(localizationMessageService.getLocalizationMessage(csvRecord.get("ThirdAnswer")));
-        answers.add(localizationMessageService.getLocalizationMessage(csvRecord.get("ForthAnswer")));
-        String rightAnswer = localizationMessageService.getLocalizationMessage(csvRecord.get("FirstAnswer"));
+        answers.add(csvRecord.get("FirstAnswer"));
+        answers.add(csvRecord.get("SecondAnswer"));
+        answers.add(csvRecord.get("ThirdAnswer"));
+        answers.add(csvRecord.get("ForthAnswer"));
+        String rightAnswer = csvRecord.get("FirstAnswer");
         return new AnswerOptions(answers, rightAnswer);
     }
 
