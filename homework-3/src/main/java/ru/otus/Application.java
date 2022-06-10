@@ -9,8 +9,8 @@ import ru.otus.service.TestProcessServiceImpl;
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
-        ConfigurableApplicationContext run = SpringApplication.run(Application.class, args);
-        TestProcessService bean = run.getBean(TestProcessServiceImpl.class);
-        bean.testProcess();
+        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+        TestProcessService service = context.getBean(TestProcessService.class);
+        service.testProcess();
     }
 }
