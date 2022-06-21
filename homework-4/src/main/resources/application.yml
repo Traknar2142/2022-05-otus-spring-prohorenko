@@ -1,4 +1,7 @@
 questions-file: classpath:/questions.csv
-file-path: classpath:/
 file-name: questions
 minimum-right-answers: 3
+
+spring:
+  main:
+    allow-circular-references: true

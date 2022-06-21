@@ -18,6 +18,7 @@ import static org.mockito.Mockito.verify;
 /**
  * @author Прохоренко Виктор
  */
+
 @DisplayName("Сервис ввода/вывода сообщений должен")
 @ExtendWith(MockitoExtension.class)
 public class MessageDialogServiceImplTest {

@@ -8,8 +8,6 @@ import ru.otus.service.TestProcessService;
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
-        TestProcessService service = context.getBean(TestProcessService.class);
-        service.testProcess();
+        SpringApplication.run(Application.class, args);
     }
 }

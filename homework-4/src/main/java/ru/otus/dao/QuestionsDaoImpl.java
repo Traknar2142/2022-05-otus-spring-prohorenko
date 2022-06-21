@@ -3,12 +3,13 @@ package ru.otus.dao;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.AnswerOptions;
 import ru.otus.domain.Question;
 import ru.otus.exceptions.QuestionsLoadingException;
+import ru.otus.service.ResourceProvider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,14 +23,15 @@ import java.util.List;
  */
 @Service
 public class QuestionsDaoImpl implements QuestionsDao {
-    private final Resource questions;
+    private final ResourceProvider resourceProvider;
 
-    public QuestionsDaoImpl(@Value("#{'${file-path}' + '${file-name}' + '-' + systemProperties['user.language']  + '.csv'}") Resource questions) {
-        this.questions = questions;
+    public QuestionsDaoImpl(ResourceProvider resourceProvider) {
+        this.resourceProvider = resourceProvider;
     }
 
     @Override
     public List<Question> getQuestions() throws QuestionsLoadingException {
+        Resource questions = resourceProvider.getResourceDependsOfLocale();
         try (CSVParser csvRecords = getParser(questions)) {
             return getQuestionList(csvRecords);
         } catch (IOException e) {

@@ -7,6 +7,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.domain.AnswerOptions;
 import ru.otus.domain.Question;
 import ru.otus.service.LocalizationMessageService;
@@ -20,12 +23,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Прохоренко Виктор
  */
-@ExtendWith(MockitoExtension.class)
+
+@SpringBootTest(classes ={MessageTransformerImpl.class})
 @DisplayName("Сервис трансформации контента в сообщение должен")
 public class MessageTransformerImplTest {
-    @Mock
+    @MockBean
     private LocalizationMessageService localizationMessageService;
-    @InjectMocks
+    @Autowired
     private MessageTransformerImpl messageTransformer;
 
     private static final String QUESTION = "How many fingers are on the hand?\n"
