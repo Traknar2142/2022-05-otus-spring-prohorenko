@@ -1,0 +1,15 @@
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+  datasource:
+    url: jdbc:postgresql://dbpostgres:5432/postgres?currentSchema=homework
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres
+      mode: always
+      continue-on-error: false

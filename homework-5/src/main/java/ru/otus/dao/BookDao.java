@@ -1,4 +1,4 @@
-package ru.otus.service;
+package ru.otus.dao;
 
 import ru.otus.domain.Book;
 
