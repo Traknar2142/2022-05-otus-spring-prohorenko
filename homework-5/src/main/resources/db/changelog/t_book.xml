@@ -24,7 +24,7 @@
             <column name="author_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="genre_id" type="varchar(255)">
+            <column name="genre_id" type="bigint">
                 <constraints nullable="true" />
             </column>
         </createTable>
