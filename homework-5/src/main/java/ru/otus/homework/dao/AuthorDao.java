@@ -1,6 +1,6 @@
-package ru.otus.dao;
+package ru.otus.homework.dao;
 
-import ru.otus.domain.Author;
+import ru.otus.homework.domain.Author;
 
 /**
  * @author Прохоренко Виктор

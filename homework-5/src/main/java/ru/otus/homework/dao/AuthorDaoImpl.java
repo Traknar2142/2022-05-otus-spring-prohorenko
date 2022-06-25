@@ -1,13 +1,12 @@
-package ru.otus.dao;
+package ru.otus.homework.dao;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import ru.otus.domain.Author;
+import ru.otus.homework.domain.Author;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,9 +15,9 @@ import java.util.Objects;
 
 @Repository
 public class AuthorDaoImpl implements AuthorDao{
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcOperations jdbcTemplate;
 
-    public AuthorDaoImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+    public AuthorDaoImpl(NamedParameterJdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -27,10 +26,10 @@ public class AuthorDaoImpl implements AuthorDao{
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("name", author.getName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
+
         jdbcTemplate.update("INSERT INTO t_author(name) values (:name)",
                 parameters, keyHolder);
-        author.setId(Objects.requireNonNull(keyHolder.getKey()).longValue());
-        return author;
+        return getAuthorById(Objects.requireNonNull(keyHolder.getKey()).longValue());
     }
 
     @Override
@@ -41,12 +40,21 @@ public class AuthorDaoImpl implements AuthorDao{
 
     @Override
     public Author updateAuthor(Author author) {
-        return null;
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("id", author.getId());
+        parameters.addValue("name", author.getName());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update("UPDATE t_author SET name = :name WHERE id = :id",
+                parameters, keyHolder);
+        return getAuthorById(Objects.requireNonNull(keyHolder.getKey()).longValue());
     }
 
     @Override
     public void deleteAuthor(Author author) {
-
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("id", author.getId());
+        jdbcTemplate.update("DELETE FROM t_author WHERE id = :id", parameters);
     }
 
     private static class AuthorMapper implements RowMapper<Author>{

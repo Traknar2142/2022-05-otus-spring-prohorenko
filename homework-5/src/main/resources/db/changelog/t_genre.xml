@@ -4,6 +4,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <property name="autoIncrement" value="false" dbms="postgresql,mssql,oracle"/>
+    <property name="autoIncrement" value="true" dbms="h2"/>
     <changeSet id="t_genre_create" author="vvprokhorenko">
         <preConditions onFail="MARK_RAN">
             <and>
@@ -12,7 +14,6 @@
                 </not>
             </and>
         </preConditions>
-        <createSequence sequenceName="id_seq" startValue="1" incrementBy="1"/>
 
         <createTable tableName="t_genre">
             <column name="id" type="bigint" autoIncrement="true">

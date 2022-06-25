@@ -12,7 +12,6 @@
                 </not>
             </and>
         </preConditions>
-        <createSequence sequenceName="id_seq" startValue="1" incrementBy="1"/>
 
         <createTable tableName="t_author">
             <column name="id" type="bigint" autoIncrement="true">
