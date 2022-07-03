@@ -6,15 +6,7 @@ spring:
     default-schema: homework
 
   datasource:
-    #url: jdbc:postgresql://postgres:5432/postgres?currentSchema=homework
-    #url: jdbc:postgresql://localhost:5432/mydb
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=homework
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver
-  sql:
-    init:
-      platform: postgres
-      mode: always
-      schema-locations: schema.sql
-      continue-on-error: false

@@ -22,6 +22,11 @@ public class Book {
         this.author = author;
     }
 
+    public Book(String title, Genre genre) {
+        this.title = title;
+        this.genre = genre;
+    }
+
     public Book(String title, Author author, Genre genre) {
         this.title = title;
         this.author = author;
@@ -33,5 +38,15 @@ public class Book {
         this.title = title;
         this.author = author;
         this.genre = genre;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", genre=" + genre +
+                '}';
     }
 }

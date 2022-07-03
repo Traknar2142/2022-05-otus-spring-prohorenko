@@ -1,13 +1,13 @@
 package ru.otus.homework.dao;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
-import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Genre;
+import ru.otus.homework.exceptions.EntityNotFoundInDbException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,6 +24,7 @@ public class GenreDaoImplTest {
     private GenreDaoImpl genreDao;
 
     @Test
+    @SneakyThrows
     @DisplayName("Найти и вернуть сущность жанра по его id из базы")
     void shouldReturnGenreById(){
         Genre expectedGenre = new Genre(1L, "Dystopia");
@@ -34,6 +35,7 @@ public class GenreDaoImplTest {
                 .isEqualTo(expectedGenre);
     }
     @Test
+    @SneakyThrows
     @DisplayName("Сохранить в базу жанр и вернуть сохраненного жанр из базы")
     void shouldReturnSavedGenre(){
         Genre newGenre = new Genre("NewGenre");
@@ -45,6 +47,7 @@ public class GenreDaoImplTest {
     }
 
     @Test
+    @SneakyThrows
     @DisplayName("Обновить сущность жанра в базе")
     void shouldUpdateGenre(){
         Genre expectedGenre = new Genre(1L, "Dystopia2");
@@ -59,6 +62,6 @@ public class GenreDaoImplTest {
     void shouldDeleteGenre(){
         Genre genreToDelete = new Genre(2L, "Psychology");
         genreDao.deleteGenre(genreToDelete);
-        assertThrows(EmptyResultDataAccessException.class, () -> genreDao.getGenreById(genreToDelete.getId()));
+        assertThrows(EntityNotFoundInDbException.class, () -> genreDao.getGenreById(genreToDelete.getId()));
     }
 }

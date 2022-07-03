@@ -1,26 +1,30 @@
 package ru.otus.homework.dao;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
+import ru.otus.homework.exceptions.EntityNotFoundInDbException;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Дао книг должно: ")
 @JdbcTest
-@Import({BookDaoImpl.class, GenreDaoImpl.class, AuthorDaoImpl.class})
+@Import({BookDaoImpl.class})
 public class BookDaoImplTest {
     @Autowired
     private BookDaoImpl bookDao;
 
     @Test
+    @SneakyThrows
     @DisplayName("Найти и вернуть книгу по его id из базы")
     void shouldReturnBookById(){
         Author author = new Author(1L, "George Orwell");
@@ -33,14 +37,15 @@ public class BookDaoImplTest {
                 .isEqualTo(actualBook);
     }
     @Test
+    @SneakyThrows
     @DisplayName("Сохранить в базу книгу и вернуть сохраненную книгу из базы")
     void shouldReturnSavedBook(){
-        Author authorForSave = new Author("George Orwell2");
-        Genre genreForSave = new Genre("Dystopia2");
-        Book bookForSave = new Book("1984-2", authorForSave, genreForSave);
+        Author authorForSave = new Author(5L,"George Orwell2");
+        Genre genreForSave = new Genre(5L,"Dystopia2");
+        Book bookForSave = new Book(5L,"1984-2", authorForSave, genreForSave);
 
-        Author author = new Author(5L, "George Orwell2");
-        Genre genre = new Genre(5L, "Dystopia2");
+        Author author = new Author(5L);
+        Genre genre = new Genre(5L);
         Book expectedBook = new Book(5L, "1984-2", author, genre);
 
         Book actualBook = bookDao.saveBook(bookForSave);
@@ -50,6 +55,7 @@ public class BookDaoImplTest {
     }
 
     @Test
+    @SneakyThrows
     @DisplayName("Обновить сущность книги в базе")
     void shouldUpdateBook(){
         Author authorForUpdate = new Author(1L, "George Orwell");
@@ -62,12 +68,17 @@ public class BookDaoImplTest {
     }
 
     @Test
+    @SneakyThrows
     @DisplayName("Удалить сущность из базы")
     void shouldDeleteBook(){
-        Author author = new Author(3L, "H. G. Wells");
-        Genre genre = new Genre(3L, "Fiction");
-        Book bookForDelete = new Book(3L, "The Time Machine", author, genre);
-        bookDao.deleteBook(bookForDelete);
-        assertThrows(EmptyResultDataAccessException.class, () -> bookDao.getBookById(bookForDelete.getId()));
+        bookDao.deleteBookById(3L);
+        assertThrows(EntityNotFoundInDbException.class, () -> bookDao.getBookById(3L));
+    }
+
+    @Test
+    @DisplayName("Вернуть список всех книг")
+    void shouldReturnListOfBooks(){
+        List<Book> books = bookDao.getAll();
+        assertThat(books).isNotEmpty();
     }
 }
