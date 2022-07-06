@@ -17,7 +17,7 @@
 
         <createTable tableName="t_genre">
             <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true" nullable="false" deleteCascade="true"/>
             </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />

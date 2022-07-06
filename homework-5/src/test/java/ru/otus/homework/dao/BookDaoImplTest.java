@@ -40,12 +40,12 @@ public class BookDaoImplTest {
     @SneakyThrows
     @DisplayName("Сохранить в базу книгу и вернуть сохраненную книгу из базы")
     void shouldReturnSavedBook(){
-        Author authorForSave = new Author(5L,"George Orwell2");
-        Genre genreForSave = new Genre(5L,"Dystopia2");
+        Author authorForSave = new Author(1L,"George Orwell");
+        Genre genreForSave = new Genre(1L,"Dystopia");
         Book bookForSave = new Book(5L,"1984-2", authorForSave, genreForSave);
 
-        Author author = new Author(5L);
-        Genre genre = new Genre(5L);
+        Author author = new Author(1L, "George Orwell");
+        Genre genre = new Genre(1L,"Dystopia");
         Book expectedBook = new Book(5L, "1984-2", author, genre);
 
         Book actualBook = bookDao.saveBook(bookForSave);

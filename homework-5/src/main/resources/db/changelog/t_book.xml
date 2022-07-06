@@ -23,10 +23,10 @@
                 <constraints nullable="false" />
             </column>
             <column name="author_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true" foreignKeyName="fk_book_author" references="t_author(id)"  deleteCascade="true"/>
             </column>
             <column name="genre_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true" foreignKeyName="fk_book_genre" references="t_genre(id)" deleteCascade="true"/>
             </column>
         </createTable>
     </changeSet>
