@@ -24,7 +24,6 @@ public class GenreDaoImplTest {
     private GenreDaoImpl genreDao;
 
     @Test
-    @SneakyThrows
     @DisplayName("Найти и вернуть сущность жанра по его id из базы")
     void shouldReturnGenreById(){
         Genre expectedGenre = new Genre(1L, "Dystopia");
@@ -35,7 +34,6 @@ public class GenreDaoImplTest {
                 .isEqualTo(expectedGenre);
     }
     @Test
-    @SneakyThrows
     @DisplayName("Сохранить в базу жанр и вернуть сохраненного жанр из базы")
     void shouldReturnSavedGenre(){
         Genre newGenre = new Genre("NewGenre");
@@ -47,7 +45,6 @@ public class GenreDaoImplTest {
     }
 
     @Test
-    @SneakyThrows
     @DisplayName("Обновить сущность жанра в базе")
     void shouldUpdateGenre(){
         Genre expectedGenre = new Genre(1L, "Dystopia2");

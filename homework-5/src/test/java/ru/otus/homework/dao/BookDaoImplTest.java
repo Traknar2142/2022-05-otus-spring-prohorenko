@@ -24,7 +24,6 @@ public class BookDaoImplTest {
     private BookDaoImpl bookDao;
 
     @Test
-    @SneakyThrows
     @DisplayName("Найти и вернуть книгу по его id из базы")
     void shouldReturnBookById(){
         Author author = new Author(1L, "George Orwell");
@@ -37,7 +36,6 @@ public class BookDaoImplTest {
                 .isEqualTo(actualBook);
     }
     @Test
-    @SneakyThrows
     @DisplayName("Сохранить в базу книгу и вернуть сохраненную книгу из базы")
     void shouldReturnSavedBook(){
         Author authorForSave = new Author(1L,"George Orwell");
@@ -55,7 +53,6 @@ public class BookDaoImplTest {
     }
 
     @Test
-    @SneakyThrows
     @DisplayName("Обновить сущность книги в базе")
     void shouldUpdateBook(){
         Author authorForUpdate = new Author(1L, "George Orwell");
@@ -68,7 +65,6 @@ public class BookDaoImplTest {
     }
 
     @Test
-    @SneakyThrows
     @DisplayName("Удалить сущность из базы")
     void shouldDeleteBook(){
         bookDao.deleteBookById(3L);

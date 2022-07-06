@@ -35,6 +35,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public void printBookById(Long id) {
+        Book bookById = bookDao.getBookById(id);
+        bookRenderService.printFormatMessage(List.of(bookById));
+    }
+
+
+    @Override
     public Book addBook(Book book) {
         updateGenreForBook(book);
         updateAuthorForBook(book);

@@ -8,6 +8,7 @@ import ru.otus.homework.exceptions.EntityNotFoundException;
  */
 public interface BookService {
     void printAllBooks();
+    void printBookById(Long id);
     Book addBook(Book book);
     Book getById(Long id);
     Book updateBook(Book book);

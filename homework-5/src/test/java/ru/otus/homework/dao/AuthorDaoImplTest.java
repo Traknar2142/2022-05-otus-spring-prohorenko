@@ -23,7 +23,6 @@ public class AuthorDaoImplTest {
     private AuthorDaoImpl authorDao;
 
     @Test
-    @SneakyThrows
     @DisplayName("Найти и вернуть сущность автора по его id из базы")
     void shouldReturnAuthorById(){
         Author expectedAuthor = new Author(1L, "George Orwell");
@@ -34,7 +33,6 @@ public class AuthorDaoImplTest {
                 .isEqualTo(expectedAuthor);
     }
     @Test
-    @SneakyThrows
     @DisplayName("Сохранить в базу автора и вернуть сохраненного автора из базы")
     void shouldReturnSavedAuthor(){
         Author newAuthor = new Author("SomeWriter");
@@ -46,7 +44,6 @@ public class AuthorDaoImplTest {
     }
 
     @Test
-    @SneakyThrows
     @DisplayName("Обновить сущность автора в базе")
     void shouldUpdateAuthor(){
         Author expectedAuthor = new Author(1L, "George Orwell2");

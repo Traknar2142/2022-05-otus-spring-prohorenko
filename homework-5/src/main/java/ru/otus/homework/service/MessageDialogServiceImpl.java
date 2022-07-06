@@ -18,7 +18,7 @@ public class MessageDialogServiceImpl implements MessageDialogService{
 
     @Override
     public String inputMessage() {
-        return scanner.next();
+        return scanner.nextLine();
 
     }
 

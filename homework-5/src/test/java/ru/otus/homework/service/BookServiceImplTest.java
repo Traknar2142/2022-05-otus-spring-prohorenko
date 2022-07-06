@@ -34,7 +34,6 @@ public class BookServiceImplTest {
     private BookServiceImpl bookService;
 
     @DisplayName("Должен вернуть сохраненную книгу")
-    @SneakyThrows
     @Test
     void shouldReturnSavedBook() {
         Author authorForSave = new Author(5L, "George Orwell2");
@@ -50,7 +49,6 @@ public class BookServiceImplTest {
     }
 
     @DisplayName("Должен вернуть кингу по id")
-    @SneakyThrows
     @Test
     void shouldReturnBookById() {
         Author authorForSave = new Author(5L, "George Orwell2");
@@ -65,7 +63,6 @@ public class BookServiceImplTest {
     }
 
     @DisplayName("Должен вернуть обновленную запись о книге")
-    @SneakyThrows
     @Test
     void shouldReturnUpdatedBook() {
         Author authorForSave = new Author(5L, "George Orwell2");
