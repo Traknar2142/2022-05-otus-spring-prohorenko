@@ -26,9 +26,9 @@ public class BookDaoImplTest {
     @Test
     @DisplayName("Найти и вернуть книгу по его id из базы")
     void shouldReturnBookById(){
-        Author author = new Author(1L, "George Orwell");
-        Genre genre = new Genre(1L, "Dystopia");
-        Book expectedBook = new Book(1L, "1984", author, genre);
+        Author author = new Author(1L, "author1");
+        Genre genre = new Genre(1L, "genre1");
+        Book expectedBook = new Book(1L, "book1", author, genre);
 
         Book actualBook = bookDao.getBookById(1L);
         assertThat(expectedBook)
@@ -38,12 +38,12 @@ public class BookDaoImplTest {
     @Test
     @DisplayName("Сохранить в базу книгу и вернуть сохраненную книгу из базы")
     void shouldReturnSavedBook(){
-        Author authorForSave = new Author(1L,"George Orwell");
-        Genre genreForSave = new Genre(1L,"Dystopia");
+        Author authorForSave = new Author(1L,"author1");
+        Genre genreForSave = new Genre(1L,"genre1");
         Book bookForSave = new Book(5L,"1984-2", authorForSave, genreForSave);
 
-        Author author = new Author(1L, "George Orwell");
-        Genre genre = new Genre(1L,"Dystopia");
+        Author author = new Author(1L, "author1");
+        Genre genre = new Genre(1L,"genre1");
         Book expectedBook = new Book(5L, "1984-2", author, genre);
 
         Book actualBook = bookDao.saveBook(bookForSave);
@@ -55,9 +55,9 @@ public class BookDaoImplTest {
     @Test
     @DisplayName("Обновить сущность книги в базе")
     void shouldUpdateBook(){
-        Author authorForUpdate = new Author(1L, "George Orwell");
-        Genre genreForUpdate = new Genre(1L, "Dystopia");
-        Book bookForUpdate = new Book(1L, "19842", authorForUpdate, genreForUpdate);
+        Author authorForUpdate = new Author(1L, "author1");
+        Genre genreForUpdate = new Genre(1L, "genre1");
+        Book bookForUpdate = new Book(1L, "updateTitle", authorForUpdate, genreForUpdate);
         Book actualBook = bookDao.updateBook(bookForUpdate);
         assertThat(actualBook)
                 .isNotNull()

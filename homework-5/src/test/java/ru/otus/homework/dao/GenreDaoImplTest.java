@@ -26,7 +26,7 @@ public class GenreDaoImplTest {
     @Test
     @DisplayName("Найти и вернуть сущность жанра по его id из базы")
     void shouldReturnGenreById(){
-        Genre expectedGenre = new Genre(1L, "Dystopia");
+        Genre expectedGenre = new Genre(1L, "genre1");
 
         Genre actualGenre = genreDao.getGenreById(1L);
         assertThat(actualGenre)

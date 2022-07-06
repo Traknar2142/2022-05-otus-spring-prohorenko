@@ -25,7 +25,7 @@ public class AuthorDaoImplTest {
     @Test
     @DisplayName("Найти и вернуть сущность автора по его id из базы")
     void shouldReturnAuthorById(){
-        Author expectedAuthor = new Author(1L, "George Orwell");
+        Author expectedAuthor = new Author(1L, "author1");
 
         Author actualAuthor = authorDao.getAuthorById(1L);
         assertThat(actualAuthor)
