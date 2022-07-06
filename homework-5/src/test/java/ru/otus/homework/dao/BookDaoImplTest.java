@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
-import ru.otus.homework.exceptions.EntityNotFoundInDbException;
+import ru.otus.homework.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
@@ -72,7 +72,7 @@ public class BookDaoImplTest {
     @DisplayName("Удалить сущность из базы")
     void shouldDeleteBook(){
         bookDao.deleteBookById(3L);
-        assertThrows(EntityNotFoundInDbException.class, () -> bookDao.getBookById(3L));
+        assertThrows(EntityNotFoundException.class, () -> bookDao.getBookById(3L));
     }
 
     @Test

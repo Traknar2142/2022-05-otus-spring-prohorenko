@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
-import ru.otus.homework.exceptions.EntityNotFoundInDbException;
+import ru.otus.homework.exceptions.EntityNotFoundException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +28,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book saveBook(Book book) throws EntityNotFoundInDbException {
+    public Book saveBook(Book book) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("title", book.getTitle());
         parameters.addValue("author_id", book.getAuthor() != null ? book.getAuthor().getId() : null);
@@ -41,7 +41,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book getBookById(Long id) throws EntityNotFoundInDbException {
+    public Book getBookById(Long id) {
         try {
             return jdbcTemplate.queryForObject(
                     "SELECT t_book.id, t_book.title, t_book.genre_id, t_genre.name as genre_name, t_book.author_id, t_author.name as author_name\n" +
@@ -50,7 +50,7 @@ public class BookDaoImpl implements BookDao {
                             "LEFT JOIN t_genre on t_book.genre_id = t_genre.id WHERE t_book.id = :id",
                     Map.of("id", id), new BookMapper());
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundInDbException(MessageFormat.format("Запись о книге c id {0} не найдена", id));
+            throw new EntityNotFoundException(MessageFormat.format("Запись о книге c id {0} не найдена", id));
         }
     }
 
@@ -64,7 +64,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book updateBook(Book book) throws EntityNotFoundInDbException {
+    public Book updateBook(Book book) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", book.getId());
         parameters.addValue("title", book.getTitle());
@@ -78,13 +78,13 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void deleteBookById(Long id) throws EntityNotFoundInDbException {
+    public void deleteBookById(Long id) {
         try {
             MapSqlParameterSource parameters = new MapSqlParameterSource();
             parameters.addValue("id", id);
             jdbcTemplate.update("DELETE FROM t_book WHERE id = :id", parameters);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundInDbException(MessageFormat.format("Запись о книге c id {0} не найдена", id));
+            throw new EntityNotFoundException(MessageFormat.format("Запись о книге c id {0} не найдена", id));
         }
     }
 

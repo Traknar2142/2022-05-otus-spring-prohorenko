@@ -7,7 +7,7 @@ import ru.otus.homework.dao.GenreDao;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
-import ru.otus.homework.exceptions.EntityNotFoundInDbException;
+import ru.otus.homework.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
@@ -35,59 +35,59 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book addBook(Book book) throws EntityNotFoundInDbException {
+    public Book addBook(Book book) {
         updateGenreForBook(book);
         updateAuthorForBook(book);
         return bookDao.saveBook(book);
     }
 
     @Override
-    public Book getById(Long id) throws EntityNotFoundInDbException {
+    public Book getById(Long id) {
         return bookDao.getBookById(id);
     }
 
     @Override
-    public Book updateBook(Book book) throws EntityNotFoundInDbException {
+    public Book updateBook(Book book) {
         updateGenreForBook(book);
         updateAuthorForBook(book);
         return bookDao.updateBook(book);
     }
 
     @Override
-    public void deleteBook(Long id) throws EntityNotFoundInDbException {
+    public void deleteBook(Long id) {
         bookDao.deleteBookById(id);
     }
 
-    private Genre getOrSaveGenre(String name) throws EntityNotFoundInDbException {
+    private Genre getOrSaveGenre(String name) {
         Genre genreByName = null;
         try {
             genreByName = genreDao.getGenreByName(name);
-        } catch (EntityNotFoundInDbException e) {
+        } catch (EntityNotFoundException e) {
             genreByName = genreDao.saveGenre(new Genre(name));
             return genreByName;
         }
         return genreByName;
     }
 
-    private void updateGenreForBook(Book book) throws EntityNotFoundInDbException {
+    private void updateGenreForBook(Book book) {
         if (book.getGenre() != null) {
             Genre genreByName = getOrSaveGenre(book.getGenre().getName());
             book.setGenre(genreByName);
         }
     }
 
-    private void updateAuthorForBook(Book book) throws EntityNotFoundInDbException {
+    private void updateAuthorForBook(Book book) {
         if (book.getAuthor() != null) {
             Author authorByName = getOrSaveAuthor(book.getAuthor().getName());
             book.setAuthor(authorByName);
         }
     }
 
-    private Author getOrSaveAuthor(String name) throws EntityNotFoundInDbException {
+    private Author getOrSaveAuthor(String name) {
         Author authorByName = null;
         try {
             authorByName = authorDao.getAuthorByName(name);
-        } catch (EntityNotFoundInDbException e) {
+        } catch (EntityNotFoundException e) {
             authorByName = authorDao.saveAuthor(new Author(name));
             return authorByName;
         }

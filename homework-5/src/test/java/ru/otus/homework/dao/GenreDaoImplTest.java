@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Genre;
-import ru.otus.homework.exceptions.EntityNotFoundInDbException;
+import ru.otus.homework.exceptions.EntityNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -62,6 +62,6 @@ public class GenreDaoImplTest {
     void shouldDeleteGenre(){
         Genre genreToDelete = new Genre(2L, "Psychology");
         genreDao.deleteGenre(genreToDelete);
-        assertThrows(EntityNotFoundInDbException.class, () -> genreDao.getGenreById(genreToDelete.getId()));
+        assertThrows(EntityNotFoundException.class, () -> genreDao.getGenreById(genreToDelete.getId()));
     }
 }

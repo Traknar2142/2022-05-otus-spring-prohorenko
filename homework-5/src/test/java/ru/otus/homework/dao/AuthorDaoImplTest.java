@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Author;
-import ru.otus.homework.exceptions.EntityNotFoundInDbException;
+import ru.otus.homework.exceptions.EntityNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -61,6 +61,6 @@ public class AuthorDaoImplTest {
     void shouldDeleteAuthor(){
         Author authorToDelete = new Author(2L, "Raymond Douglas Bradbury");
         authorDao.deleteAuthor(authorToDelete);
-        assertThrows(EntityNotFoundInDbException.class, () -> authorDao.getAuthorById(authorToDelete.getId()));
+        assertThrows(EntityNotFoundException.class, () -> authorDao.getAuthorById(authorToDelete.getId()));
     }
 }

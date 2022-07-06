@@ -8,7 +8,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Author;
-import ru.otus.homework.exceptions.EntityNotFoundInDbException;
+import ru.otus.homework.exceptions.EntityNotFoundException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +25,7 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author saveAuthor(Author author) throws EntityNotFoundInDbException {
+    public Author saveAuthor(Author author){
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("name", author.getName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -36,27 +36,27 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author getAuthorById(Long id) throws EntityNotFoundInDbException {
+    public Author getAuthorById(Long id) {
         try {
             return jdbcTemplate.queryForObject("SELECT id, name FROM t_author WHERE id = :id",
                     Map.of("id", id), new AuthorMapper());
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundInDbException(MessageFormat.format("Запись об авторе c id {0} не найдена", id));
+            throw new EntityNotFoundException(MessageFormat.format("Запись об авторе c id {0} не найдена", id));
         }
     }
 
     @Override
-    public Author getAuthorByName(String name) throws EntityNotFoundInDbException {
+    public Author getAuthorByName(String name) {
         try {
             return jdbcTemplate.queryForObject("SELECT id, name FROM t_author WHERE name = :name",
                     Map.of("name", name), new AuthorMapper());
         }catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundInDbException(MessageFormat.format("Запись об авторе c именем {0} не найдена", name));
+            throw new EntityNotFoundException(MessageFormat.format("Запись об авторе c именем {0} не найдена", name));
         }
     }
 
     @Override
-    public Author updateAuthor(Author author) throws EntityNotFoundInDbException {
+    public Author updateAuthor(Author author){
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", author.getId());
         parameters.addValue("name", author.getName());

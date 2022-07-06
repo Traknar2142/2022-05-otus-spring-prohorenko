@@ -7,7 +7,6 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
-import ru.otus.homework.exceptions.EntityNotFoundInDbException;
 import ru.otus.homework.service.BookService;
 
 /**
@@ -25,10 +24,10 @@ public class ShellController {
     }
 
     @ShellMethod(value = "addBook", key = {"addBook", "ab"})
-    public String addBook() throws EntityNotFoundInDbException {
+    public String addBook() {
         if (book != null) {
             bookService.addBook(book);
-            book=null;
+            book = null;
             return String.format("Книга успешно добавлена в базу: %s", book);
         } else {
             return "Книга не добавлена т.к. запись о книге пуста";
@@ -64,16 +63,16 @@ public class ShellController {
     }
 
     @ShellMethod(value = "downloadForUpdate", key = {"downloadForUpdate", "dfu"})
-    public String downloadForUpdate(@ShellOption Long id) throws EntityNotFoundInDbException {
+    public String downloadForUpdate(@ShellOption Long id) {
         book = bookService.getById(id);
         return String.format("Успешно загружена запись для обновления: %s", book);
     }
 
     @ShellMethod(value = "updateBook", key = {"updateBook", "ub"})
-    public String updateBook() throws EntityNotFoundInDbException {
+    public String updateBook() {
         if (book != null) {
             bookService.updateBook(book);
-            book=null;
+            book = null;
             return String.format("Книга успешно обновлена в базе: %s", book);
         } else {
             return "Книга не обновлена т.к. запись о книге пуста";
@@ -81,7 +80,7 @@ public class ShellController {
     }
 
     @ShellMethod(value = "deleteBook", key = {"deleteBook", "db"})
-    public String deleteBook(@ShellOption Long id) throws EntityNotFoundInDbException {
+    public String deleteBook(@ShellOption Long id) {
         bookService.deleteBook(id);
         return "Книга успешно удалена";
     }

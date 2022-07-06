@@ -8,7 +8,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Genre;
-import ru.otus.homework.exceptions.EntityNotFoundInDbException;
+import ru.otus.homework.exceptions.EntityNotFoundException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +28,7 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public Genre saveGenre(Genre genre) throws EntityNotFoundInDbException {
+    public Genre saveGenre(Genre genre) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("name", genre.getName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -39,28 +39,28 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public Genre getGenreById(Long id) throws EntityNotFoundInDbException {
+    public Genre getGenreById(Long id) {
         try {
             return jdbcTemplate.queryForObject("SELECT id, name FROM t_genre WHERE id = :id",
                     Map.of("id", id), new GenreDaoImpl.GenreMapper());
 
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundInDbException(MessageFormat.format("Запись о жанре c id {0} не найдена", id));
+            throw new EntityNotFoundException(MessageFormat.format("Запись о жанре c id {0} не найдена", id));
         }
     }
 
     @Override
-    public Genre getGenreByName(String name) throws EntityNotFoundInDbException {
+    public Genre getGenreByName(String name) {
         try {
             return jdbcTemplate.queryForObject("SELECT id, name FROM t_genre WHERE name = :name",
                     Map.of("name", name), new GenreDaoImpl.GenreMapper());
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundInDbException(MessageFormat.format("Запись о жанре c именем {0} не найдена", name));
+            throw new EntityNotFoundException(MessageFormat.format("Запись о жанре c именем {0} не найдена", name));
         }
     }
 
     @Override
-    public Genre updateGenre(Genre genre) throws EntityNotFoundInDbException {
+    public Genre updateGenre(Genre genre)  {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", genre.getId());
         parameters.addValue("name", genre.getName());
