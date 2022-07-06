@@ -73,7 +73,7 @@ public class ShellController {
         if (book != null) {
             bookService.updateBook(book);
             book = null;
-            return String.format("Книга успешно обновлена в базе: %s", book);
+            return String.format("Книга успешно обновлена: %s", book);
         } else {
             return "Книга не обновлена т.к. запись о книге пуста";
         }
