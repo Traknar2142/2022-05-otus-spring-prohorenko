@@ -11,6 +11,7 @@
     <modules>
         <module>homework-1</module>
         <module>homework-2</module>
+        <module>homework-6</module>
     </modules>
 
     <properties>
