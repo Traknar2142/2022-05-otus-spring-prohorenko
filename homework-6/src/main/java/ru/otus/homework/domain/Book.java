@@ -2,6 +2,8 @@ package ru.otus.homework.domain;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author Прохоренко Виктор
  */
@@ -11,6 +13,7 @@ public class Book {
     private String title;
     private Author author;
     private Genre genre;
+    private List<Comment> comments;
 
     public Book(String title) {
         this.title = title;
