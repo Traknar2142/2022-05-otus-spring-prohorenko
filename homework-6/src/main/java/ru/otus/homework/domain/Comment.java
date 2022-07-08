@@ -19,10 +19,15 @@ import javax.persistence.Table;
 @Table(name = "t_comment")
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "comment")
     private String commentMessage;
+
+    public Comment(Long id, String commentMessage) {
+        this.id = id;
+        this.commentMessage = commentMessage;
+    }
 
     public Comment(String commentMessage) {
         this.commentMessage = commentMessage;

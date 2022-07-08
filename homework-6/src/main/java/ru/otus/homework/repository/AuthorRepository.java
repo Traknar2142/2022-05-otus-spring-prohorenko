@@ -1,14 +1,16 @@
-package ru.otus.homework.dao;
+package ru.otus.homework.repository;
 
 import ru.otus.homework.domain.Author;
+
+import java.util.Optional;
 
 /**
  * @author Прохоренко Виктор
  */
-public interface AuthorDao {
+public interface AuthorRepository {
     Author saveAuthor(Author author);
-    Author getAuthorById(Long id);
-    Author getAuthorByName(String name);
+    Optional<Author> getAuthorById(Long id);
+    Optional<Author> getAuthorByName(String name);
     Author updateAuthor(Author author);
     void deleteAuthor(Author author);
 }

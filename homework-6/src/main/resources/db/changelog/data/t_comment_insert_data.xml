@@ -1,0 +1,44 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="t_comment_insert_data" author="vvprokhorenko">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="t_comment"/>
+        </preConditions>
+        <insert tableName="t_comment">
+            <column name="comment" value="comment-1-1"/>
+            <column name="book_id" value="1"/>
+        </insert>
+        <insert tableName="t_comment">
+            <column name="comment" value="comment-1-2"/>
+            <column name="book_id" value="1"/>
+        </insert>
+        <insert tableName="t_comment">
+            <column name="comment" value="comment-2-1"/>
+            <column name="book_id" value="2"/>
+        </insert>
+        <insert tableName="t_comment">
+            <column name="comment" value="comment-2-2"/>
+            <column name="book_id" value="2"/>
+        </insert>
+        <insert tableName="t_comment">
+            <column name="comment" value="comment-3-1"/>
+            <column name="book_id" value="3"/>
+        </insert>
+        <insert tableName="t_comment">
+            <column name="comment" value="comment-3-2"/>
+            <column name="book_id" value="3"/>
+        </insert>
+        <insert tableName="t_comment">
+            <column name="comment" value="comment-4-1"/>
+            <column name="book_id" value="4"/>
+        </insert>
+        <insert tableName="t_comment">
+            <column name="comment" value="comment-4-2"/>
+            <column name="book_id" value="4"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

@@ -1,14 +1,16 @@
-package ru.otus.homework.dao;
+package ru.otus.homework.repository;
 
 import ru.otus.homework.domain.Genre;
+
+import java.util.Optional;
 
 /**
  * @author Прохоренко Виктор
  */
-public interface GenreDao {
+public interface GenreRepository {
     Genre saveGenre(Genre genre);
-    Genre getGenreById(Long id);
-    Genre getGenreByName(String name);
+    Optional<Genre> getGenreById(Long id);
+    Optional<Genre> getGenreByName(String name);
     Genre updateGenre(Genre genre);
     void deleteGenre(Genre genre);
 }

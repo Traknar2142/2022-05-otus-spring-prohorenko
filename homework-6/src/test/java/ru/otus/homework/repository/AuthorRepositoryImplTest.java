@@ -1,33 +1,37 @@
-package ru.otus.homework.dao;
+package ru.otus.homework.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.exceptions.EntityNotFoundException;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Прохоренко Виктор
  */
 @DisplayName("Дао авторов должно: ")
-@JdbcTest
-@Import(AuthorDaoImpl.class)
-public class AuthorDaoImplTest {
+@DataJpaTest
+@Import(AuthorRepositoryImpl.class)
+public class AuthorRepositoryImplTest {
     @Autowired
-    private AuthorDaoImpl authorDao;
+    private AuthorRepositoryImpl authorDao;
 
     @Test
     @DisplayName("Найти и вернуть сущность автора по его id из базы")
     void shouldReturnAuthorById(){
         Author expectedAuthor = new Author(1L, "author1");
 
-        Author actualAuthor = authorDao.getAuthorById(1L);
-        assertThat(actualAuthor)
+        Optional<Author> actualAuthor = authorDao.getAuthorById(1L);
+        assertThat(actualAuthor.get())
                 .isNotNull()
                 .isEqualTo(expectedAuthor);
     }
@@ -57,6 +61,6 @@ public class AuthorDaoImplTest {
     void shouldDeleteAuthor(){
         Author authorToDelete = new Author(2L, "Raymond Douglas Bradbury");
         authorDao.deleteAuthor(authorToDelete);
-        assertThrows(EntityNotFoundException.class, () -> authorDao.getAuthorById(authorToDelete.getId()));
+        assertThat(authorDao.getAuthorById(authorToDelete.getId())).isEqualTo(Optional.empty());
     }
 }
