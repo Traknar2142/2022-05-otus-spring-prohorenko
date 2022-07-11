@@ -12,6 +12,7 @@ import ru.otus.homework.domain.Genre;
 import ru.otus.homework.exceptions.EntityNotFoundException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -33,8 +34,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public Author saveAuthor(Author author){
-        if (author.getId() == null){
+    public Author saveAuthor(Author author) {
+        if (author.getId() == null) {
             entityManager.persist(author);
             return author;
         }
@@ -52,11 +53,15 @@ public class AuthorRepositoryImpl implements AuthorRepository {
                 "from Author a " +
                 "where a.name = :name", Author.class);
         query.setParameter("name", name);
-        return Optional.ofNullable(query.getSingleResult());
+        try {
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public Author updateAuthor(Author author){
+    public Author updateAuthor(Author author) {
         Long id = author.getId();
         String name = author.getName();
         Query query = entityManager.createQuery("update Author a " +
@@ -65,7 +70,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         query.setParameter("name", name);
         query.setParameter("id", id);
         query.executeUpdate();
-        return getAuthorById(id).orElseThrow(()-> new EntityNotFoundException(MessageFormat.format("Запись о жанре {0} не найдена", author)));
+        return getAuthorById(id).orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Запись о жанре {0} не найдена", author)));
     }
 
     @Override

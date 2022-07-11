@@ -43,17 +43,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book updateBook(Book book) {
-        Long id = book.getId();
-        String title = book.getTitle();
-        Query query = entityManager.createQuery("update Book b " +
-                "set b.title = :title, b.genre = :genre, b.author = :author " +
-                "where b.id = :id");
-        query.setParameter("title", title);
-        query.setParameter("genre", book.getGenre());
-        query.setParameter("author", book.getAuthor());
-        query.setParameter("id", id);
-        query.executeUpdate();
-        return getBookById(id).orElseThrow(()-> new EntityNotFoundException(MessageFormat.format("Запись о книге {0} не найдена", book)));
+        return entityManager.merge(book);
     }
 
     @Override

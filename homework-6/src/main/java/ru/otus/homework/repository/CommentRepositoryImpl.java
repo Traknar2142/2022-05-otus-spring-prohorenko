@@ -63,6 +63,7 @@ public class CommentRepositoryImpl implements CommentRepository{
     public void deleteCommentById(Long id) {
         Query query = entityManager.createQuery("delete from Comment  c where c.id = :id");
         query.setParameter("id", id);
-        query.executeUpdate();
+        int i = query.executeUpdate();
+        if (i==0) throw new EntityNotFoundException(MessageFormat.format("Запись о комментарии {0} не найдена", id));
     }
 }

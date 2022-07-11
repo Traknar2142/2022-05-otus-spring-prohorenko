@@ -5,8 +5,12 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.domain.Book;
+import ru.otus.homework.domain.Comment;
 import ru.otus.homework.service.BookService;
+import ru.otus.homework.service.CommentService;
 import ru.otus.homework.service.EntityProcessor;
+
+import java.util.List;
 
 /**
  * @author Прохоренко Виктор
@@ -16,6 +20,8 @@ import ru.otus.homework.service.EntityProcessor;
 public class ShellController {
     private final BookService bookService;
     private final EntityProcessor<Book> bookProcessor;
+    private final CommentService commentService;
+    private final EntityProcessor<Comment> commentProcessor;
 
     @ShellMethod(value = "printBooks", key = {"printBooks", "pbs"})
     public void printAllBooks() {
@@ -46,5 +52,26 @@ public class ShellController {
         return "Книга успешно удалена";
     }
 
+    @ShellMethod(value = "addComment", key = {"addComment", "ac"})
+    public String addComment(){
+        Comment comment = commentProcessor.addProcess();
+        return String.format("Комментарий успешно добавлен успешно добавлена: %s", comment);
+    }
 
+    @ShellMethod(value = "updateComment", key = {"updateComment", "uc"})
+    public String updateComment(){
+        Comment comment = commentProcessor.updateProcess();
+        return String.format("Комментарий успешно обновлен: %s", comment);
+    }
+
+    @ShellMethod(value = "deleteComment", key = {"deleteComment", "dc"})
+    public String deleteComment(@ShellOption Long id){
+        commentService.deleteComment(id);
+        return "Комментарий успешно удален";
+    }
+
+    @ShellMethod(value = "getCommentsByBookId", key = {"getCommentsByBookId", "gcbbi"})
+    public void getCommentsByBookId(@ShellOption Long bookId){
+        commentService.printCommentsByBooksId(bookId);
+    }
 }

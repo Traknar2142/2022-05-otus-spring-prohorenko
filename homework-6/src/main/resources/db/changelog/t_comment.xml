@@ -22,8 +22,8 @@
             <column name="comment" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="book_id" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="book_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_book_comment" references="t_book(id)" deleteCascade="true"/>
             </column>
         </createTable>
     </changeSet>

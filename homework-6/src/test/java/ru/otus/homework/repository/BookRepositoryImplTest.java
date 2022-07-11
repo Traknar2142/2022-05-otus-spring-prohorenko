@@ -42,8 +42,8 @@ public class BookRepositoryImplTest {
     @Test
     @DisplayName("Сохранить в базу книгу и вернуть сохраненную книгу из базы")
     void shouldReturnSavedBook(){
-        Author authorForSave = new Author(1L,"author1");
-        Genre genreForSave = new Genre(1L,"genre1");
+        Author authorForSave = new Author("author1");
+        Genre genreForSave = new Genre("genre1");
         List<Comment> commentsForSave = Arrays.asList(new Comment(9L,"comment-5-1"), new Comment(10L,"comment-5-2"));
         Book bookForSave = new Book("1984-2", authorForSave, genreForSave, commentsForSave);
 

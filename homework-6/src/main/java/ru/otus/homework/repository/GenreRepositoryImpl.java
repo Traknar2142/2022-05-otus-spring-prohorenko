@@ -11,6 +11,7 @@ import ru.otus.homework.domain.Genre;
 import ru.otus.homework.exceptions.EntityNotFoundException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -53,7 +54,12 @@ public class GenreRepositoryImpl implements GenreRepository {
                 "from Genre g " +
                 "where g.name = :name", Genre.class);
         query.setParameter("name", name);
-        return Optional.ofNullable(query.getSingleResult());
+        try{
+            Optional<Genre> singleResult = Optional.of(query.getSingleResult());
+            return singleResult;
+        }catch (Exception e){
+            return Optional.empty();
+        }
     }
 
     @Override

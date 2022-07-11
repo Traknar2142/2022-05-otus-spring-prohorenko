@@ -1,8 +1,10 @@
 package ru.otus.homework.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
+import ru.otus.homework.repository.CommentRepository;
 import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
@@ -21,28 +23,38 @@ public class BookServiceImpl implements BookService {
     private final OutRenderService<Book> bookRenderService;
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
-    private final GenreRepository genreRepository;
+    private final GenreRepository genreRepositoryDao;
+    private final CommentRepository commentRepository;
 
-    public BookServiceImpl(OutRenderService<Book> bookRenderService, BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
+    public BookServiceImpl(OutRenderService<Book> bookRenderService, BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepositoryDao, CommentRepository commentRepository) {
         this.bookRenderService = bookRenderService;
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
-        this.genreRepository = genreRepository;
+        this.genreRepositoryDao = genreRepositoryDao;
+        this.commentRepository = commentRepository;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public void printAllBooks() {
         List<Book> books = bookRepository.getAll();
         bookRenderService.printFormatMessage(books);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public void printBookById(Long id) {
-        Optional<Book> bookById = bookRepository.getBookById(id);
-        bookRenderService.printFormatMessage(List.of(bookById.get()));
+        Book bookById = getById(id);
+        bookRenderService.printFormatMessage(List.of(bookById));
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Book getById(Long id) {
+        return bookRepository.getBookById(id).orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Запись о книге с id {0} не найдена", id)));
+    }
 
+    @Transactional
     @Override
     public Book addBook(Book book) {
         updateGenreForBook(book);
@@ -50,11 +62,7 @@ public class BookServiceImpl implements BookService {
         return bookRepository.saveBook(book);
     }
 
-    @Override
-    public Book getById(Long id) {
-        return bookRepository.getBookById(id).orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Запись о книге с id {0} не найдена", id)));
-    }
-
+    @Transactional
     @Override
     public Book updateBook(Book book) {
         updateGenreForBook(book);
@@ -62,13 +70,10 @@ public class BookServiceImpl implements BookService {
         return bookRepository.updateBook(book);
     }
 
+    @Transactional
     @Override
     public void deleteBook(Long id) {
         bookRepository.deleteBookById(id);
-    }
-
-    private Genre getOrSaveGenre(String name) {
-        return genreRepository.getGenreByName(name).orElse(genreRepository.saveGenre(new Genre(name)));
     }
 
     private void updateGenreForBook(Book book) {
@@ -85,7 +90,20 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    private Author getOrSaveAuthor(String name) {
-        return authorRepository.getAuthorByName(name).orElse(authorRepository.saveAuthor(new Author(name)));
+    private Genre getOrSaveGenre(String name) {
+        Optional<Genre> genreByName = genreRepositoryDao.getGenreByName(name);
+        if (genreByName.isEmpty()){
+            return genreRepositoryDao.saveGenre(new Genre(name));
+        }
+        return genreByName.get();
     }
+
+    private Author getOrSaveAuthor(String name) {
+        Optional<Author> authorByName = authorRepository.getAuthorByName(name);
+        if (authorByName.isEmpty()){
+            return authorRepository.saveAuthor(new Author(name));
+        }
+        return authorByName.get();
+    }
+
 }
