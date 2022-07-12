@@ -24,7 +24,7 @@ public class CommentOutputRenderServiceImpl implements OutRenderService<Comment>
     private String formatListToStringForOutput(List<Comment> comments) {
         StringBuilder builder = new StringBuilder();
         for (Comment comment : comments){
-            builder.append(comment.toString() + "\n");
+            builder.append(comment.toString()).append("\n");
         }
         return builder.toString();
     }

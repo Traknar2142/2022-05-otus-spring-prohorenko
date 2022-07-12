@@ -44,7 +44,7 @@ public class BookRepositoryImplTest {
     void shouldReturnSavedBook(){
         Author authorForSave = new Author("author1");
         Genre genreForSave = new Genre("genre1");
-        List<Comment> commentsForSave = Arrays.asList(new Comment(9L,"comment-5-1"), new Comment(10L,"comment-5-2"));
+        List<Comment> commentsForSave = Arrays.asList(new Comment("comment-5-1"), new Comment("comment-5-2"));
         Book bookForSave = new Book("1984-2", authorForSave, genreForSave, commentsForSave);
 
         Book actualBook = bookDao.saveBook(bookForSave);

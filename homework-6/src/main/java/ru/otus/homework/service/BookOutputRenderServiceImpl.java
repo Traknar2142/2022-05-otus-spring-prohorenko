@@ -23,7 +23,7 @@ public class BookOutputRenderServiceImpl implements OutRenderService<Book>{
     private String formatListToStringForOutput(List<Book> books) {
         StringBuilder builder = new StringBuilder();
         for (Book book : books){
-            builder.append(book.toString() + "\n");
+            builder.append(book.toString()).append("\n");
         }
         return builder.toString();
     }
