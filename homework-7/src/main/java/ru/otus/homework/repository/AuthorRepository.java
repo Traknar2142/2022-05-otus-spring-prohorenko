@@ -1,5 +1,6 @@
 package ru.otus.homework.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.otus.homework.domain.Author;
 
 import java.util.Optional;
@@ -7,10 +8,6 @@ import java.util.Optional;
 /**
  * @author Прохоренко Виктор
  */
-public interface AuthorRepository {
-    Author saveAuthor(Author author);
-    Optional<Author> getAuthorById(Long id);
-    Optional<Author> getAuthorByName(String name);
-    Author updateAuthor(Author author);
-    void deleteAuthor(Author author);
+public interface AuthorRepository extends JpaRepository<Author, Long> {
+    Optional<Author> findByName(String name);
 }

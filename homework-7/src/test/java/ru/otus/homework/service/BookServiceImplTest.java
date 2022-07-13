@@ -14,6 +14,8 @@ import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
 import ru.otus.homework.repository.GenreRepository;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -40,9 +42,9 @@ public class BookServiceImplTest {
         Genre genreForSave = new Genre(5L, "Dystopia2");
         Book bookForSave = new Book(5L, "1984-2", authorForSave, genreForSave);
 
-        Mockito.when(genreRepository.getGenreByName("Dystopia2")).thenReturn(java.util.Optional.of(genreForSave));
-        Mockito.when(authorRepository.getAuthorByName("George Orwell2")).thenReturn(java.util.Optional.of(authorForSave));
-        Mockito.when(bookRepository.saveBook(bookForSave)).thenReturn(bookForSave);
+        Mockito.when(genreRepository.findByName("Dystopia2")).thenReturn(Optional.of(genreForSave));
+        Mockito.when(authorRepository.findByName("George Orwell2")).thenReturn(Optional.of(authorForSave));
+        Mockito.when(bookRepository.save(bookForSave)).thenReturn(bookForSave);
 
         Book actual = bookService.addBook(bookForSave);
         assertThat(bookForSave).isEqualTo(actual);
@@ -55,7 +57,7 @@ public class BookServiceImplTest {
         Genre genreForSave = new Genre(5L, "Dystopia2");
         Book bookForSave = new Book(5L, "1984-2", authorForSave, genreForSave);
 
-        Mockito.when(bookRepository.getBookById(5L)).thenReturn(java.util.Optional.of(bookForSave));
+        Mockito.when(bookRepository.findById(5L)).thenReturn(Optional.of(bookForSave));
 
         Book actual = bookService.getById(5L);
 
@@ -69,9 +71,9 @@ public class BookServiceImplTest {
         Genre genreForSave = new Genre(5L, "Dystopia2");
         Book bookForSave = new Book(5L, "1984-2", authorForSave, genreForSave);
 
-        Mockito.when(genreRepository.getGenreByName("Dystopia2")).thenReturn(java.util.Optional.of(genreForSave));
-        Mockito.when(authorRepository.getAuthorByName("George Orwell2")).thenReturn(java.util.Optional.of(authorForSave));
-        Mockito.when(bookRepository.updateBook(bookForSave)).thenReturn(bookForSave);
+        Mockito.when(genreRepository.findByName("Dystopia2")).thenReturn(Optional.of(genreForSave));
+        Mockito.when(authorRepository.findByName("George Orwell2")).thenReturn(Optional.of(authorForSave));
+        Mockito.when(bookRepository.save(bookForSave)).thenReturn(bookForSave);
 
         Book actual = bookService.updateBook(bookForSave);
         assertThat(bookForSave).isEqualTo(actual);

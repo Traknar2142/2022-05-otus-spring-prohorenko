@@ -37,13 +37,13 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public Comment addComment(Comment comment) {
-        return commentRepository.saveComment(comment);
+        return commentRepository.save(comment);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Comment> getCommentsByBookId(Long bookId) {
-        Optional<Book> bookById = bookRepository.getBookById(bookId);
+        Optional<Book> bookById = bookRepository.findById(bookId);
         if (bookById.isPresent()) {
             return bookById.get().getComments();
         } else throw new EntityNotFoundException(MessageFormat.format("Запись о книге с id {0} не найдена", bookId));
@@ -52,18 +52,18 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     @Override
     public Comment getCommentById(Long id) {
-        return commentRepository.getCommentById(id).orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Комментарий с id {0} не найден", id)));
+        return commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Комментарий с id {0} не найден", id)));
     }
 
     @Transactional
     @Override
     public Comment updateComment(Comment comment) {
-        return commentRepository.updateComment(comment);
+        return commentRepository.save(comment);
     }
 
     @Transactional
     @Override
     public void deleteComment(Long id) {
-        commentRepository.deleteCommentById(id);
+        commentRepository.deleteById(id);
     }
 }

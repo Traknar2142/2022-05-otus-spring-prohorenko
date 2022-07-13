@@ -23,21 +23,19 @@ public class BookServiceImpl implements BookService {
     private final OutRenderService<Book> bookRenderService;
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
-    private final GenreRepository genreRepositoryDao;
-    private final CommentRepository commentRepository;
+    private final GenreRepository genreRepository;
 
-    public BookServiceImpl(OutRenderService<Book> bookRenderService, BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepositoryDao, CommentRepository commentRepository) {
+    public BookServiceImpl(OutRenderService<Book> bookRenderService, BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository, CommentRepository commentRepository) {
         this.bookRenderService = bookRenderService;
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
-        this.genreRepositoryDao = genreRepositoryDao;
-        this.commentRepository = commentRepository;
+        this.genreRepository = genreRepository;
     }
 
     @Transactional(readOnly = true)
     @Override
     public void printAllBooks() {
-        List<Book> books = bookRepository.getAll();
+        List<Book> books = bookRepository.findAll();
         bookRenderService.printFormatMessage(books);
     }
 
@@ -51,7 +49,7 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public Book getById(Long id) {
-        return bookRepository.getBookById(id).orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Запись о книге с id {0} не найдена", id)));
+        return bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Запись о книге с id {0} не найдена", id)));
     }
 
     @Transactional
@@ -59,7 +57,7 @@ public class BookServiceImpl implements BookService {
     public Book addBook(Book book) {
         updateGenreForBook(book);
         updateAuthorForBook(book);
-        return bookRepository.saveBook(book);
+        return bookRepository.save(book);
     }
 
     @Transactional
@@ -67,13 +65,13 @@ public class BookServiceImpl implements BookService {
     public Book updateBook(Book book) {
         updateGenreForBook(book);
         updateAuthorForBook(book);
-        return bookRepository.updateBook(book);
+        return bookRepository.save(book);
     }
 
     @Transactional
     @Override
     public void deleteBook(Long id) {
-        bookRepository.deleteBookById(id);
+        bookRepository.deleteById(id);
     }
 
     private void updateGenreForBook(Book book) {
@@ -91,17 +89,17 @@ public class BookServiceImpl implements BookService {
     }
 
     private Genre getOrSaveGenre(String name) {
-        Optional<Genre> genreByName = genreRepositoryDao.getGenreByName(name);
+        Optional<Genre> genreByName = genreRepository.findByName(name);
         if (genreByName.isEmpty()){
-            return genreRepositoryDao.saveGenre(new Genre(name));
+            return genreRepository.save(new Genre(name));
         }
         return genreByName.get();
     }
 
     private Author getOrSaveAuthor(String name) {
-        Optional<Author> authorByName = authorRepository.getAuthorByName(name);
+        Optional<Author> authorByName = authorRepository.findByName(name);
         if (authorByName.isEmpty()){
-            return authorRepository.saveAuthor(new Author(name));
+            return authorRepository.save(new Author(name));
         }
         return authorByName.get();
     }
