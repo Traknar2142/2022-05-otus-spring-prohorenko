@@ -27,14 +27,16 @@ public class CommentRepositoryImplTest {
     void shouldReturnCommentById(){
         Comment expectedComment = new Comment(1L, "comment-1-1");
         Comment actualComment = commentRepository.getCommentById(1L).get();
-        assertThat(expectedComment).isEqualTo(actualComment);
+        assertThat(expectedComment.getId()).isEqualTo(actualComment.getId());
+        assertThat(expectedComment.getCommentMessage()).isEqualTo(actualComment.getCommentMessage());
     }
     @Test
     @DisplayName("Сохранить в базу сомментарий и вернуть сохраненный сомментарий из базы")
     void shouldReturnSavedComment(){
         Comment expectedComment = new Comment("comment-5-1");
         Comment actualComment = commentRepository.saveComment(expectedComment);
-        assertThat(expectedComment).isEqualTo(actualComment);
+        assertThat(expectedComment.getId()).isEqualTo(9L);
+        assertThat(expectedComment.getCommentMessage()).isEqualTo(actualComment.getCommentMessage());
     }
 
     @Test
@@ -42,7 +44,8 @@ public class CommentRepositoryImplTest {
     void shouldUpdateComment(){
         Comment expectedComment = new Comment(1L, "comment-1-9999");
         Comment actualComment = commentRepository.updateComment(expectedComment);
-        assertThat(expectedComment).isEqualTo(actualComment);
+        assertThat(expectedComment.getId()).isEqualTo(actualComment.getId());
+        assertThat(expectedComment.getCommentMessage()).isEqualTo(actualComment.getCommentMessage());
     }
 
     @Test

@@ -79,6 +79,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     public void deleteGenre(Genre genre) {
         Query query = entityManager.createQuery("delete from Genre  g where g.id = :id");
         query.setParameter("id", genre.getId());
-        query.executeUpdate();
+        int i = query.executeUpdate();
+        if (i==0) throw new EntityNotFoundException(MessageFormat.format("Запись о комментарии {0} не найдена", genre.getId()));
     }
 }

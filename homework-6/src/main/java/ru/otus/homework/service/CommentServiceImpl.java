@@ -2,7 +2,6 @@ package ru.otus.homework.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Comment;
 import ru.otus.homework.exceptions.EntityNotFoundException;
 import ru.otus.homework.repository.BookRepository;
@@ -10,7 +9,6 @@ import ru.otus.homework.repository.CommentRepository;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Прохоренко Виктор
@@ -19,9 +17,9 @@ import java.util.Optional;
 public class CommentServiceImpl implements CommentService {
     private final BookRepository bookRepository;
     private final CommentRepository commentRepository;
-    private final OutRenderService<Comment> commentOutRenderService;
+    private final CommentRenderService commentOutRenderService;
 
-    public CommentServiceImpl(BookRepository bookRepository, CommentRepository commentRepository, OutRenderService<Comment> commentOutRenderService) {
+    public CommentServiceImpl(BookRepository bookRepository, CommentRepository commentRepository, CommentRenderService commentOutRenderService) {
         this.bookRepository = bookRepository;
         this.commentRepository = commentRepository;
         this.commentOutRenderService = commentOutRenderService;
@@ -43,10 +41,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     @Override
     public List<Comment> getCommentsByBookId(Long bookId) {
-        Optional<Book> bookById = bookRepository.getBookById(bookId);
-        if (bookById.isPresent()) {
-            return bookById.get().getComments();
-        } else throw new EntityNotFoundException(MessageFormat.format("Запись о книге с id {0} не найдена", bookId));
+        return commentRepository.getCommentsByBookId(bookId);
     }
 
     @Transactional(readOnly = true)

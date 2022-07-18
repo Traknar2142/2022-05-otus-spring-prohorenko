@@ -7,10 +7,9 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Comment;
 import ru.otus.homework.service.BookService;
+import ru.otus.homework.service.CommentProcessor;
 import ru.otus.homework.service.CommentService;
-import ru.otus.homework.service.EntityProcessor;
-
-import java.util.List;
+import ru.otus.homework.service.BookProcessor;
 
 /**
  * @author Прохоренко Виктор
@@ -19,9 +18,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShellController {
     private final BookService bookService;
-    private final EntityProcessor<Book> bookProcessor;
+    private final BookProcessor bookProcessor;
     private final CommentService commentService;
-    private final EntityProcessor<Comment> commentProcessor;
+    private final CommentProcessor commentProcessor;
 
     @ShellMethod(value = "printBooks", key = {"printBooks", "pbs"})
     public void printAllBooks() {

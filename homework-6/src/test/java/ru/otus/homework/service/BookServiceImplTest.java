@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 public class BookServiceImplTest {
     @Mock
-    private OutRenderService<Book> bookRenderService;
+    private BookRenderService bookRenderService;
     @Mock
     private BookRepository bookRepository;
     @Mock

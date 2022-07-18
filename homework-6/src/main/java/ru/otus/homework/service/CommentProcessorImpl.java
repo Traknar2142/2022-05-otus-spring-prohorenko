@@ -4,15 +4,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Comment;
-import ru.otus.homework.exceptions.EntityNotFoundException;
-
-import java.util.List;
 
 /**
  * @author Прохоренко Виктор
  */
 @Service
-public class CommentProcessorImpl implements EntityProcessor<Comment>{
+public class CommentProcessorImpl implements CommentProcessor {
     private final MessageDialogService messageDialogService;
     private final CommentService commentService;
     private final BookService bookService;
@@ -31,14 +28,9 @@ public class CommentProcessorImpl implements EntityProcessor<Comment>{
         Book book = bookService.getById(id);
         messageDialogService.outputMessage("Введите комментарий");
         String commentMessage = messageDialogService.inputMessage();
-        List<Comment> comments = book.getComments();//.add(new Comment(commentMessage));
-        comments.add(new Comment(commentMessage));
-        Book updateBook = bookService.updateBook(book);
-        return updateBook.getComments()
-                .stream()
-                .filter(com -> com.getCommentMessage().equals(commentMessage))
-                .findFirst()
-                .orElseThrow(() ->new EntityNotFoundException("Комментарий не найден"));
+        Comment comment = new Comment(commentMessage);
+        comment.setBook(book);
+        return commentService.addComment(comment);
     }
 
     @Transactional

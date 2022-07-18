@@ -32,7 +32,7 @@ public class BookRepositoryImplTest {
         Author author = new Author(1L, "author1");
         Genre genre = new Genre(1L, "genre1");
         List<Comment> comments = Arrays.asList(new Comment(1L, "comment-1-1"), new Comment(2L, "comment-1-2"));
-        Book expectedBook = new Book(1L, "book1", author, genre, comments);
+        Book expectedBook = new Book(1L, "book1", author, genre);
 
         Optional<Book> actualBook = bookDao.getBookById(1L);
         assertThat(expectedBook)
@@ -45,7 +45,7 @@ public class BookRepositoryImplTest {
         Author authorForSave = new Author("author1");
         Genre genreForSave = new Genre("genre1");
         List<Comment> commentsForSave = Arrays.asList(new Comment("comment-5-1"), new Comment("comment-5-2"));
-        Book bookForSave = new Book("1984-2", authorForSave, genreForSave, commentsForSave);
+        Book bookForSave = new Book("1984-2", authorForSave, genreForSave);
 
         Book actualBook = bookDao.saveBook(bookForSave);
 
@@ -53,7 +53,6 @@ public class BookRepositoryImplTest {
         assertThat(actualBook.getTitle()).isEqualTo("1984-2");
         assertThat(actualBook.getAuthor()).isEqualTo(authorForSave);
         assertThat(actualBook.getGenre()).isEqualTo(genreForSave);
-        assertThat(actualBook.getComments()).containsExactlyElementsOf(commentsForSave);
     }
 
     @Test
@@ -62,7 +61,7 @@ public class BookRepositoryImplTest {
         Author authorForUpdate = new Author(1L, "author1");
         Genre genreForUpdate = new Genre(1L, "genre1");
         List<Comment> comments = Arrays.asList(new Comment(1L, "comment-1-1"), new Comment(2L, "comment-1-2"));
-        Book bookForUpdate = new Book(1L, "updateTitle", authorForUpdate, genreForUpdate, comments);
+        Book bookForUpdate = new Book(1L, "updateTitle", authorForUpdate, genreForUpdate);
 
         Book actualBook = bookDao.updateBook(bookForUpdate);
 
@@ -70,7 +69,6 @@ public class BookRepositoryImplTest {
         assertThat(actualBook.getTitle()).isEqualTo("updateTitle");
         assertThat(actualBook.getAuthor()).isEqualTo(authorForUpdate);
         assertThat(actualBook.getGenre()).isEqualTo(genreForUpdate);
-        assertThat(actualBook.getComments()).containsExactlyElementsOf(comments);
     }
 
     @Test

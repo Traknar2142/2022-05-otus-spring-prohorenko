@@ -41,8 +41,15 @@ public class CommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
+    public List<Comment> getCommentsByBookId(Long bookId) {
+        TypedQuery<Comment> query = entityManager.createQuery("select c from Comment c where c.book.id = :bookId", Comment.class);
+        query.setParameter("bookId", bookId);
+        return query.getResultList();
+    }
+
+    @Override
     public List<Comment> getAll() {
-        TypedQuery<Comment> query = entityManager.createQuery("select c from Comment c", Comment.class);
+        TypedQuery<Comment> query = entityManager.createQuery("select c from Comment c join fetch c.book", Comment.class);
         return query.getResultList();
     }
 

@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface CommentRepository {
     Comment saveComment(Comment comment);
     Optional<Comment> getCommentById(Long id);
+    List<Comment> getCommentsByBookId(Long bookId);
     List<Comment> getAll();
     Comment updateComment(Comment comment);
     void deleteCommentById(Long id);

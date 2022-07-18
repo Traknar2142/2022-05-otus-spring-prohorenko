@@ -20,18 +20,16 @@ import java.util.Optional;
  */
 @Service
 public class BookServiceImpl implements BookService {
-    private final OutRenderService<Book> bookRenderService;
+    private final BookRenderService bookRenderService;
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepositoryDao;
-    private final CommentRepository commentRepository;
 
-    public BookServiceImpl(OutRenderService<Book> bookRenderService, BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepositoryDao, CommentRepository commentRepository) {
+    public BookServiceImpl(BookRenderService bookRenderService, BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepositoryDao, CommentRepository commentRepository) {
         this.bookRenderService = bookRenderService;
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepositoryDao = genreRepositoryDao;
-        this.commentRepository = commentRepository;
     }
 
     @Transactional(readOnly = true)

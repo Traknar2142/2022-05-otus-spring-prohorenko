@@ -24,7 +24,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Repository
-@Transactional
 public class AuthorRepositoryImpl implements AuthorRepository {
     @PersistenceContext
     private final EntityManager entityManager;
