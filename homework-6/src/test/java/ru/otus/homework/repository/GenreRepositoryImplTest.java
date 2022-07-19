@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.exceptions.EntityNotFoundException;
@@ -12,6 +13,7 @@ import ru.otus.homework.exceptions.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -23,6 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class GenreRepositoryImplTest {
     @Autowired
     private GenreRepositoryImpl genreDao;
+
+    @Autowired
+    private TestEntityManager entityManager;
 
     @Test
     @DisplayName("Найти и вернуть сущность жанра по его id из базы")
@@ -60,6 +65,6 @@ public class GenreRepositoryImplTest {
     void shouldDeleteGenre(){
         Genre genreToDelete = new Genre(2L, "Psychology");
         genreDao.deleteGenre(genreToDelete);
-        assertThat(genreDao.getGenreById(genreToDelete.getId())).isEqualTo(Optional.empty());
+        assertNull(entityManager.find(Genre.class, 2L));
     }
 }

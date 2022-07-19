@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Дао книг должно: ")
@@ -25,6 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class BookRepositoryImplTest {
     @Autowired
     private BookRepositoryImpl bookDao;
+
+    @Autowired
+    private TestEntityManager entityManager;
 
     @Test
     @DisplayName("Найти и вернуть книгу по его id из базы")
@@ -75,7 +80,7 @@ public class BookRepositoryImplTest {
     @DisplayName("Удалить сущность из базы")
     void shouldDeleteBook(){
         bookDao.deleteBookById(3L);
-        assertThat(bookDao.getBookById(3L)).isEqualTo(Optional.empty());
+        assertNull(entityManager.find(Book.class, 3L));
     }
 
     @Test

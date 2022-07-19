@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Comment;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author Прохоренко Виктор
@@ -21,6 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CommentRepositoryImplTest {
     @Autowired
     private CommentRepositoryImpl commentRepository;
+
+    @Autowired
+    private TestEntityManager entityManager;
 
     @Test
     @DisplayName("Найти и вернуть сомментарий по его id из базы")
@@ -52,7 +57,7 @@ public class CommentRepositoryImplTest {
     @DisplayName("Удалить комментария из базы")
     void shouldDeleteComment(){
         commentRepository.deleteCommentById(2L);
-        assertThat(commentRepository.getCommentById(2L)).isEqualTo(Optional.empty());
+        assertNull(entityManager.find(Comment.class, 2L));
     }
 
     @Test
@@ -60,5 +65,12 @@ public class CommentRepositoryImplTest {
     void shouldReturnListOfComment(){
         List<Comment> comments = commentRepository.getAll();
         assertThat(comments).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Вернуть список комментариев одной книги")
+    void shouldReturnListOfCommentOneBook(){
+        List<Comment> commentsByBookId = commentRepository.getCommentsByBookId(1L);
+        assertThat(commentsByBookId).isNotEmpty();
     }
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Author;
 
@@ -22,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class AuthorRepositoryImplTest {
     @Autowired
     private AuthorRepositoryImpl authorRepository;
+
+    @Autowired
+    private TestEntityManager entityManager;
 
     @Test
     @DisplayName("Найти и вернуть сущность автора по его id из базы")
@@ -59,6 +63,6 @@ public class AuthorRepositoryImplTest {
     void shouldDeleteAuthor(){
         Author authorToDelete = new Author(2L, "Raymond Douglas Bradbury");
         authorRepository.deleteAuthor(authorToDelete);
-        assertThat(authorRepository.getAuthorById(authorToDelete.getId())).isEqualTo(Optional.empty());
+        assertNull(entityManager.find(Author.class, 2L));
     }
 }
