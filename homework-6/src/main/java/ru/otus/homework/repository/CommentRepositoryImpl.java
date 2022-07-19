@@ -44,7 +44,12 @@ public class CommentRepositoryImpl implements CommentRepository{
     public List<Comment> getCommentsByBookId(Long bookId) {
         TypedQuery<Comment> query = entityManager.createQuery("select c from Comment c join fetch c.book where c.book.id = :bookId", Comment.class);
         query.setParameter("bookId", bookId);
-        return query.getResultList();
+        List<Comment> resultList = query.getResultList();
+        if (resultList.isEmpty()) {
+            throw new EntityNotFoundException(MessageFormat.format("Не найдены комментарии с id книги {0}", bookId));
+        } else {
+            return resultList;
+        }
     }
 
     @Override
