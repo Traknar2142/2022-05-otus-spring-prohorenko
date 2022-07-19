@@ -1,0 +1,24 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="t_genre_insert_data" author="vvprokhorenko">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="t_genre"/>
+        </preConditions>
+        <insert tableName="t_genre">
+            <column name="name" value="genre1"/>
+        </insert>
+        <insert tableName="t_genre">
+            <column name="name" value="genre2"/>
+        </insert>
+        <insert tableName="t_genre">
+            <column name="name" value="genre3"/>
+        </insert>
+        <insert tableName="t_genre">
+            <column name="name" value="genre4"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
