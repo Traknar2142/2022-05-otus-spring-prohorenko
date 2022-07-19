@@ -19,9 +19,9 @@ import java.util.Optional;
 public class CommentServiceImpl implements CommentService {
     private final BookRepository bookRepository;
     private final CommentRepository commentRepository;
-    private final OutRenderService<Comment> commentOutRenderService;
+    private final CommentRenderService commentOutRenderService;
 
-    public CommentServiceImpl(BookRepository bookRepository, CommentRepository commentRepository, OutRenderService<Comment> commentOutRenderService) {
+    public CommentServiceImpl(BookRepository bookRepository, CommentRepository commentRepository, CommentRenderService commentOutRenderService) {
         this.bookRepository = bookRepository;
         this.commentRepository = commentRepository;
         this.commentOutRenderService = commentOutRenderService;
@@ -43,10 +43,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     @Override
     public List<Comment> getCommentsByBookId(Long bookId) {
-        Optional<Book> bookById = bookRepository.findById(bookId);
-        if (bookById.isPresent()) {
-            return bookById.get().getComments();
-        } else throw new EntityNotFoundException(MessageFormat.format("Запись о книге с id {0} не найдена", bookId));
+        return commentRepository.findCommentByBookId(bookId);
     }
 
     @Transactional(readOnly = true)

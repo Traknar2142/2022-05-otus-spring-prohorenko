@@ -9,7 +9,7 @@ import java.util.List;
  * @author Прохоренко Виктор
  */
 @Service
-public class BookOutputRenderServiceImpl implements OutRenderService<Book>{
+public class BookOutputRenderServiceImpl implements BookRenderService {
     private final MessageDialogService messageDialogService;
 
     public BookOutputRenderServiceImpl(MessageDialogService messageDialogService) {

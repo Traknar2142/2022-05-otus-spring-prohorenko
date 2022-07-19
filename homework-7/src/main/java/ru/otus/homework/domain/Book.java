@@ -12,9 +12,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -33,20 +35,13 @@ public class Book {
     @Column(name = "title")
     private String title;
 
-    @Fetch(FetchMode.SELECT)
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @Fetch(FetchMode.SELECT)
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "genre_id")
     private Genre genre;
-
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "book_id")
-    private List<Comment> comments;
 
     public Book(String title) {
         this.title = title;
@@ -68,12 +63,6 @@ public class Book {
         this.genre = genre;
     }
 
-    public Book(String title, Author author, Genre genre, List<Comment> comments) {
-        this.title = title;
-        this.author = author;
-        this.genre = genre;
-        this.comments = comments;
-    }
 
     public Book(Long id, String title, Author author, Genre genre) {
         this.id = id;
@@ -82,13 +71,6 @@ public class Book {
         this.genre = genre;
     }
 
-    public Book(Long id, String title, Author author, Genre genre, List<Comment> comments) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.genre = genre;
-        this.comments = comments;
-    }
 
     @Override
     public String toString() {

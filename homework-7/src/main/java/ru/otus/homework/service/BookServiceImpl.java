@@ -2,14 +2,14 @@ package ru.otus.homework.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.homework.domain.Author;
-import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Genre;
-import ru.otus.homework.exceptions.EntityNotFoundException;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
 import ru.otus.homework.repository.CommentRepository;
 import ru.otus.homework.repository.GenreRepository;
+import ru.otus.homework.domain.Author;
+import ru.otus.homework.domain.Book;
+import ru.otus.homework.domain.Genre;
+import ru.otus.homework.exceptions.EntityNotFoundException;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -20,16 +20,16 @@ import java.util.Optional;
  */
 @Service
 public class BookServiceImpl implements BookService {
-    private final OutRenderService<Book> bookRenderService;
+    private final BookRenderService bookRenderService;
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
 
-    public BookServiceImpl(OutRenderService<Book> bookRenderService, BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository, CommentRepository commentRepository) {
+    public BookServiceImpl(BookRenderService bookRenderService, BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepositoryDao, CommentRepository commentRepository) {
         this.bookRenderService = bookRenderService;
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
-        this.genreRepository = genreRepository;
+        this.genreRepository = genreRepositoryDao;
     }
 
     @Transactional(readOnly = true)

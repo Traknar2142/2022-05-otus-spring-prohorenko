@@ -8,7 +8,7 @@ import ru.otus.homework.transformer.BookTransformer;
  * @author Прохоренко Виктор
  */
 @Service
-public class BookProcessorImpl implements EntityProcessor<Book> {
+public class BookProcessorImpl implements BookProcessor{
     private final MessageDialogService messageDialogService;
     private final BookService bookService;
 

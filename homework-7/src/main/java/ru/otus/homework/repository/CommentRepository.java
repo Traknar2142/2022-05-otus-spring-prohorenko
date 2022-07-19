@@ -10,4 +10,5 @@ import java.util.Optional;
  * @author Прохоренко Виктор
  */
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+    List<Comment> findCommentByBookId(Long bookId);
 }

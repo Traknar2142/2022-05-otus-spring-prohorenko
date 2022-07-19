@@ -9,7 +9,7 @@ import java.util.List;
  * @author Прохоренко Виктор
  */
 @Service
-public class CommentOutputRenderServiceImpl implements OutRenderService<Comment> {
+public class CommentOutputRenderServiceImpl implements CommentRenderService {
     private final MessageDialogService messageDialogService;
 
     public CommentOutputRenderServiceImpl(MessageDialogService messageDialogService) {
@@ -24,7 +24,7 @@ public class CommentOutputRenderServiceImpl implements OutRenderService<Comment>
     private String formatListToStringForOutput(List<Comment> comments) {
         StringBuilder builder = new StringBuilder();
         for (Comment comment : comments){
-            builder.append(comment.toString()).append("\n");
+            builder.append(comment.getCommentMessage()).append("\n");
         }
         return builder.toString();
     }
