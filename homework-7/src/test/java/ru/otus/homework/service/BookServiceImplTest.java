@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Прохоренко Виктор
  */
-/*@DisplayName("Сервис книг должен")
+@DisplayName("Сервис книг должен")
 @ExtendWith(MockitoExtension.class)
 public class BookServiceImplTest {
     @Mock
@@ -78,4 +78,4 @@ public class BookServiceImplTest {
         Book actual = bookService.updateBook(bookForSave);
         assertThat(bookForSave).isEqualTo(actual);
     }
-}*/
+}

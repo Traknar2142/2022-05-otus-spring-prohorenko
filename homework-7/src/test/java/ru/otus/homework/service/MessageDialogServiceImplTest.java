@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 /**
  * @author Прохоренко Виктор
  */
-/*@DisplayName("Сервис ввода/вывода сообщений должен")
+@DisplayName("Сервис ввода/вывода сообщений должен")
 @ExtendWith(MockitoExtension.class)
 public class MessageDialogServiceImplTest {
     private InputStream in;
@@ -49,4 +49,4 @@ public class MessageDialogServiceImplTest {
         messageDialogService.outputMessage(expected);
         verify(output, times(1)).println(expected);
     }
-}*/
+}
