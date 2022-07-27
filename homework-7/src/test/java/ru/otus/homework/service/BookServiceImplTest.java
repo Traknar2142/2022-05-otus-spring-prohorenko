@@ -25,8 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 public class BookServiceImplTest {
     @Mock
-    private BookRenderService bookRenderService;
-    @Mock
     private BookRepository bookRepository;
     @Mock
     private AuthorRepository authorRepository;
@@ -57,7 +55,7 @@ public class BookServiceImplTest {
         Genre genreForSave = new Genre(5L, "Dystopia2");
         Book bookForSave = new Book(5L, "1984-2", authorForSave, genreForSave);
 
-        Mockito.when(bookRepository.findById(5L)).thenReturn(Optional.of(bookForSave));
+        Mockito.when(bookRepository.getBookById(5L)).thenReturn(Optional.of(bookForSave));
 
         Book actual = bookService.getById(5L);
 

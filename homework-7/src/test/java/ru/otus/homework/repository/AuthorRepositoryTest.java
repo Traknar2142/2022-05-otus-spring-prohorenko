@@ -14,9 +14,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Прохоренко Виктор
  */
-@DisplayName("Дао авторов должно: ")
+@DisplayName("Репозиторий авторов должен: ")
 @DataJpaTest
-public class AuthorRepositoryImplTest {
+public class AuthorRepositoryTest {
     @Autowired
     private AuthorRepository authorRepository;
 

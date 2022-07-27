@@ -13,9 +13,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Прохоренко Виктор
  */
-@DisplayName("Дао жанров должно: ")
+@DisplayName("Репозиторий жанров жанров должен: ")
 @DataJpaTest
-public class GenreRepositoryImplTest {
+public class GenreRepositoryTest {
     @Autowired
     private GenreRepository genreRepository;
 
