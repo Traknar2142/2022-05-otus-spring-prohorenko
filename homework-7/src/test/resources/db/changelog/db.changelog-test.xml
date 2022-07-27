@@ -1,0 +1,16 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include file="db/changelog/t_author.xml"/>
+    <include file="db/changelog/data/t_author_insert_data_test.xml"/>
+    <include file="db/changelog/t_genre.xml"/>
+    <include file="db/changelog/data/t_genre_insert_data_test.xml"/>
+    <include file="db/changelog/t_book.xml"/>
+    <include file="db/changelog/data/t_book_insert_data_test.xml"/>
+    <include file="db/changelog/t_comment.xml"/>
+    <include file="db/changelog/data/t_comment_insert_data_test.xml"/>
+
+</databaseChangeLog>
