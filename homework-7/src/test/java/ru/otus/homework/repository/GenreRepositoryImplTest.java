@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Прохоренко Виктор
  */
-@DisplayName("Дао жанров должно: ")
+/*@DisplayName("Дао жанров должно: ")
 @DataJpaTest
 public class GenreRepositoryImplTest {
     @Autowired
@@ -29,4 +29,4 @@ public class GenreRepositoryImplTest {
                 .isNotNull()
                 .isEqualTo(expectedGenre);
     }
-}
+}*/

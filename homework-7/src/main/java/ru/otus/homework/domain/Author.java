@@ -33,8 +33,4 @@ public class Author {
         this.name = name;
     }
 
-    public Author(Long id) {
-        this.id = id;
-    }
-
 }

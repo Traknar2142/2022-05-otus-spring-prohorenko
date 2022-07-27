@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Прохоренко Виктор
  */
-@DisplayName("Дао авторов должно: ")
+/*@DisplayName("Дао авторов должно: ")
 @DataJpaTest
 public class AuthorRepositoryImplTest {
     @Autowired
@@ -30,4 +30,4 @@ public class AuthorRepositoryImplTest {
                 .isNotNull()
                 .isEqualTo(expectedAuthor);
     }
-}
+}*/

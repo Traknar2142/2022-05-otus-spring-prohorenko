@@ -33,17 +33,21 @@ public class CommentProcessorImpl implements CommentProcessor {
         return commentService.addComment(comment);
     }
 
-    @Transactional
     @Override
     public Comment updateProcess() {
         messageDialogService.outputMessage("Введите id комментария для изменения");
         Long id = Long.valueOf(messageDialogService.inputMessage());
-        Comment commentById = commentService.getCommentById(id);
 
         messageDialogService.outputMessage("Введите новый комментарий");
         String commentMessage = messageDialogService.inputMessage();
 
-        commentById.setCommentMessage(commentMessage);
-        return commentService.updateComment(commentById);
+        return updateProcess2(id, commentMessage);
+    }
+
+    @Transactional
+    public Comment updateProcess2(Long id, String message){
+        Comment commentById = commentService.getCommentById(id);
+        commentById.setCommentMessage(message);
+        return commentService.addComment(commentById);
     }
 }

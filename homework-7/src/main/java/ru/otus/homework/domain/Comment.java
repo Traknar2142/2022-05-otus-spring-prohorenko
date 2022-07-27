@@ -1,7 +1,10 @@
 package ru.otus.homework.domain;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -14,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -21,7 +26,8 @@ import java.util.List;
 /**
  * @author Прохоренко Виктор
  */
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "t_comment")
@@ -33,16 +39,19 @@ public class Comment {
     @Column(name = "comment")
     private String commentMessage;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
 
-    public Comment(Long id, String commentMessage) {
-        this.id = id;
+    public Comment(String commentMessage) {
         this.commentMessage = commentMessage;
     }
 
-    public Comment(String commentMessage) {
-        this.commentMessage = commentMessage;
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", commentMessage='" + commentMessage + '\'' +
+                '}';
     }
 }

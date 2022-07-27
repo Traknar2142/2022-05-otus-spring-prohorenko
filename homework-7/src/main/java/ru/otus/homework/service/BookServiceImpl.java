@@ -35,7 +35,7 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public void printAllBooks() {
-        List<Book> books = bookRepository.findAll();
+        List<Book> books = bookRepository.getAll();
         bookRenderService.printFormatMessage(books);
     }
 
@@ -49,7 +49,7 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public Book getById(Long id) {
-        return bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Запись о книге с id {0} не найдена", id)));
+        return bookRepository.getBookById(id).orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Запись о книге с id {0} не найдена", id)));
     }
 
     @Transactional

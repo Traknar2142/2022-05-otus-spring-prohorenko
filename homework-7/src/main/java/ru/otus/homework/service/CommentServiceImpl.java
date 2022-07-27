@@ -17,12 +17,10 @@ import java.util.Optional;
  */
 @Service
 public class CommentServiceImpl implements CommentService {
-    private final BookRepository bookRepository;
     private final CommentRepository commentRepository;
     private final CommentRenderService commentOutRenderService;
 
-    public CommentServiceImpl(BookRepository bookRepository, CommentRepository commentRepository, CommentRenderService commentOutRenderService) {
-        this.bookRepository = bookRepository;
+    public CommentServiceImpl(CommentRepository commentRepository, CommentRenderService commentOutRenderService) {
         this.commentRepository = commentRepository;
         this.commentOutRenderService = commentOutRenderService;
     }
