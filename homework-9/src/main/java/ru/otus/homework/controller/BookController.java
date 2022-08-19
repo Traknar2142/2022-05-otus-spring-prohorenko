@@ -23,7 +23,7 @@ public class BookController {
     @GetMapping("/")
     public String listPage(Model model){
         List<BookDto> books = bookService.getAllBooks();
-        model.addAllAttributes("books", books);
+        model.addAttribute("books", books);
         return "list";
     }
 }

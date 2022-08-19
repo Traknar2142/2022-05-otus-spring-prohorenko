@@ -12,7 +12,7 @@ public class AuthorDtoTransformer {
     public static AuthorDto toDto(Author author){
         AuthorDto authorDto = new AuthorDto();
         authorDto.setId(author.getId());
-        authorDto.setName(authorDto.getName());
+        authorDto.setName(author.getName());
         return authorDto;
     }
 }
