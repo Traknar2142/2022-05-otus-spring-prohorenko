@@ -10,10 +10,17 @@ import ru.otus.homework.dto.GenreDto;
  */
 @UtilityClass
 public class GenreDtoTransformer {
-    public static GenreDto toDto(Genre genre){
+    public static GenreDto toDto(Genre genre) {
         GenreDto genreDto = new GenreDto();
         genreDto.setId(genre.getId());
         genreDto.setName(genre.getName());
         return genreDto;
+    }
+
+    public static Genre toEntity(GenreDto genreDto) {
+        Genre genre = new Genre();
+        genre.setId(genreDto.getId());
+        genre.setName(genreDto.getName());
+        return genre;
     }
 }

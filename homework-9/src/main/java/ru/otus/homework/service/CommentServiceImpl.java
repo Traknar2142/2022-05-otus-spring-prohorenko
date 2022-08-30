@@ -15,18 +15,9 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
-    private final CommentRenderService commentOutRenderService;
 
-    public CommentServiceImpl(CommentRepository commentRepository, CommentRenderService commentOutRenderService) {
+    public CommentServiceImpl(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
-        this.commentOutRenderService = commentOutRenderService;
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public void printCommentsByBooksId(Long bookId) {
-        List<Comment> commentsByBookId = getCommentsByBookId(bookId);
-        commentOutRenderService.printFormatMessage(commentsByBookId);
     }
 
     @Transactional

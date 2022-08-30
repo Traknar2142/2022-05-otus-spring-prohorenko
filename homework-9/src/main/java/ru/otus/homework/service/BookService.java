@@ -10,7 +10,6 @@ import java.util.List;
  */
 public interface BookService {
     List<BookDto> getAllBooks();
-    void printBookById(Long id);
     Book addBook(Book book);
     Book getById(Long id);
     Book updateBook(Book book);

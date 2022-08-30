@@ -9,7 +9,6 @@ import ru.otus.homework.dto.BookDto;
 import ru.otus.homework.exceptions.EntityNotFoundException;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
-import ru.otus.homework.repository.CommentRepository;
 import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.transformer.BookDtoTransformer;
 
@@ -23,13 +22,11 @@ import java.util.stream.Collectors;
  */
 @Service
 public class BookServiceImpl implements BookService {
-    private final BookRenderService bookRenderService;
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
 
-    public BookServiceImpl(BookRenderService bookRenderService, BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepositoryDao, CommentRepository commentRepository) {
-        this.bookRenderService = bookRenderService;
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepositoryDao) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepositoryDao;
@@ -44,13 +41,6 @@ public class BookServiceImpl implements BookService {
 
     private List<BookDto> transformListToDto(List<Book> allBooks) {
         return allBooks.stream().map(BookDtoTransformer::transformToDto).collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public void printBookById(Long id) {
-        Book bookById = getById(id);
-        bookRenderService.printFormatMessage(List.of(bookById));
     }
 
     @Transactional(readOnly = true)

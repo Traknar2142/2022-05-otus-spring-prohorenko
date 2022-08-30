@@ -17,4 +17,13 @@ public class BookDtoTransformer {
         bookDto.setGenre(GenreDtoTransformer.toDto(book.getGenre()));
         return bookDto;
     }
+
+    public static Book transformToEntity(BookDto bookDto) {
+        Book book = new Book();
+        book.setId(bookDto.getId());
+        book.setTitle(bookDto.getTitle());
+        book.setAuthor(AuthorDtoTransformer.toEntity(bookDto.getAuthor()));
+        book.setGenre(GenreDtoTransformer.toEntity(bookDto.getGenre()));
+        return book;
+    }
 }
