@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
+    <meta name="keywords" th:content="${keywords}"/>
     <title>List of all books</title>
     <style type="text/css">
         body {
@@ -23,6 +24,7 @@
             width: 50px;
         }
     </style>
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <h3>Books:</h3>
@@ -38,22 +40,39 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.id}">1</td>
-        <td th:text="${book.title}">Title</td>
-        <td th:text="${book.author.name}">Author</td>
-        <td th:text="${book.genre.name}">Genre</td>
-        <td>
-            <a href="edit.html" th:href="@{/edit(id=${book.id})}">Edit</a>
-            <a th:href="@{/delete(id=${book.id})}">Delete</a>
-        </td>
-    </tr>
     </tbody>
 </table>
 
 <a href="add.html" th:href="@{/add}">
     <button type="button">Add book</button>
 </a>
+
+<script>
+    $(function () {
+        $.get('/api/books').done(function (books) {
+            books.forEach(function (book) {
+                $('tbody').append(`
+                <tr>
+                    <td>${book.id}</td>
+                    <td>${book.title}</td>
+                    <td>${book.author.name}</td>
+                    <td>${book.genre.name}</td>
+                    <td>
+                        <a href="edit.html">Edit</a>
+                        <a href=# onclick="deleteBook(${book.id})">Delete</a>
+                     </td>
+                </tr>`)
+            });
+        })
+    });
+
+    function deleteBook(bookId) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("DELETE", "/api/books/delete/" + bookId, true)
+        xhttp.send();
+    }
+
+</script>
 
 </body>
 </html>

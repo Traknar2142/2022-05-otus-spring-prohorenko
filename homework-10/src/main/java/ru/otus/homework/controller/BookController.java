@@ -13,9 +13,6 @@ import ru.otus.homework.transformer.BookDtoTransformer;
 
 import java.util.List;
 
-/**
- * @author Прохоренко Виктор
- */
 @Controller
 public class BookController {
     private final BookService bookService;
@@ -25,13 +22,12 @@ public class BookController {
     }
 
     @GetMapping("/")
-    public String listPage(Model model){
-        List<BookDto> books = bookService.getAllBooks();
-        model.addAttribute("books", books);
+    public String listPage(Model model) {
+        model.addAttribute("keywords", "list users in Omsk, omsk, list users, list users free");
         return "list";
     }
 
-    @GetMapping("/edit")
+    /*@GetMapping("/edit")
     public String editPage(@RequestParam("id") Long id, Model model){
         Book book = bookService.getById(id);
         model.addAttribute("book", book);
@@ -62,6 +58,6 @@ public class BookController {
     public String deleteBook(@RequestParam("id") Long id){
         bookService.deleteBook(id);
         return "redirect:/";
-    }
+    }*/
 
 }
