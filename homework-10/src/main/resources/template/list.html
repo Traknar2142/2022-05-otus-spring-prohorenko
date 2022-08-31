@@ -48,7 +48,9 @@
 </a>
 
 <script>
-    $(function () {
+    $(render());
+
+    function render(){
         $.get('/api/books').done(function (books) {
             books.forEach(function (book) {
                 $('tbody').append(`
@@ -64,7 +66,8 @@
                 </tr>`)
             });
         })
-    });
+
+    }
 
     function deleteBook(bookId) {
         var xhttp = new XMLHttpRequest();
