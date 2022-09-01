@@ -27,14 +27,14 @@ public class BookController {
         return "list";
     }
 
-    /*@GetMapping("/edit")
+    @GetMapping("/edit")
     public String editPage(@RequestParam("id") Long id, Model model){
         Book book = bookService.getById(id);
         model.addAttribute("book", book);
         return "edit";
     }
 
-    @PostMapping("/edit")
+    /*@PostMapping("/edit")
     public String updateBook(BookDto book){
         Book entityBook = BookDtoTransformer.transformToEntity(book);
         bookService.updateBook(entityBook);

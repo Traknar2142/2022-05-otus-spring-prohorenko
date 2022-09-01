@@ -60,7 +60,7 @@
                     <td>${book.author.name}</td>
                     <td>${book.genre.name}</td>
                     <td>
-                        <a href="edit.html">Edit</a>
+                        <a href="edit.html" th:href="@{/edit(id=${book.id})}">Edit</a>
                         <a href=# onclick="deleteBook(${book.id})">Delete</a>
                      </td>
                 </tr>`)
@@ -73,6 +73,7 @@
         var xhttp = new XMLHttpRequest();
         xhttp.open("DELETE", "/api/books/delete/" + bookId, true)
         xhttp.send();
+        location.reload();
     }
 
 </script>
