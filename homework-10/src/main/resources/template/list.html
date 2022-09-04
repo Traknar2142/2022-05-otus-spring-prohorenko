@@ -36,16 +36,11 @@
         <th>Title</th>
         <th>Author</th>
         <th>Genre</th>
-        <th>Action</th>
     </tr>
     </thead>
     <tbody>
     </tbody>
 </table>
-
-<a href="add.html" th:href="@{/add}">
-    <button type="button">Add book</button>
-</a>
 
 <script>
     $(render());
@@ -59,21 +54,10 @@
                     <td>${book.title}</td>
                     <td>${book.author.name}</td>
                     <td>${book.genre.name}</td>
-                    <td>
-                        <a href="edit.html" th:href="@{/edit(id=${book.id})}">Edit</a>
-                        <a href=# onclick="deleteBook(${book.id})">Delete</a>
-                     </td>
                 </tr>`)
             });
         })
 
-    }
-
-    function deleteBook(bookId) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("DELETE", "/api/books/delete/" + bookId, true)
-        xhttp.send();
-        location.reload();
     }
 
 </script>
