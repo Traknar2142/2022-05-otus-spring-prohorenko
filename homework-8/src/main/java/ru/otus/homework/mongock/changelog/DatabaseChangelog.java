@@ -3,11 +3,10 @@ package ru.otus.homework.mongock.changelog;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
+import ru.otus.homework.domain.Comment;
 import ru.otus.homework.domain.Genre;
 
 @ChangeLog
@@ -27,6 +26,11 @@ public class DatabaseChangelog {
 
         Book book = new Book("1984", author, genre);
         mongockTemplate.save(book, "books");
+
+        Comment comment = new Comment("comment1");
+        comment.setBook(book);
+
+        mongockTemplate.save(comment, "comments");
 
     }
 

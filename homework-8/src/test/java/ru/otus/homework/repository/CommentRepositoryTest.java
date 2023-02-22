@@ -32,6 +32,7 @@ public class CommentRepositoryTest {
 
     @BeforeEach
     void init(){
+        mongoTemplate.getDb().drop();
         Author author = new Author("1", "author1");
         Genre genre = new Genre("1", "genre1");
         Book book = new Book("1", "book1", author, genre);

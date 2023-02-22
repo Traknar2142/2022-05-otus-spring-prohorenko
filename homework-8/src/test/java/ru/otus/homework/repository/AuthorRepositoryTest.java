@@ -29,6 +29,7 @@ public class AuthorRepositoryTest {
 
     @BeforeEach
     void init(){
+        mongoTemplate.getDb().drop();
         Author author = new Author("1", "author1");
         mongoTemplate.save(author, "authors");
     }

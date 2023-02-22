@@ -29,6 +29,7 @@ public class GenreRepositoryTest {
 
     @BeforeEach
     void init(){
+        mongoTemplate.getDb().drop();
         Genre genre = new Genre("1", "genre1");
         mongoTemplate.save(genre, "genres");
     }

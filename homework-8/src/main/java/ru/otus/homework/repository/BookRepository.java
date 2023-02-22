@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * @author Прохоренко Виктор
  */
-public interface BookRepository extends CrudRepository<Book, String> {
+public interface BookRepository extends CrudRepository<Book, String>, BookRepositoryCustom {
     @Override
     Optional<Book> findById(String s);
 
