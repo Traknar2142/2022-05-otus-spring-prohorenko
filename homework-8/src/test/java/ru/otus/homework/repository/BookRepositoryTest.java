@@ -1,5 +1,6 @@
 package ru.otus.homework.repository;
 
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -100,7 +101,7 @@ public class BookRepositoryTest {
 
         bookRepository.deleteByIdCustom(deletableBook.getId());
         List<Book> books = mongoTemplate.find(new Query(Criteria.where("_id").is(deletableBook.getId())), Book.class);
-        List<Comment> comments = mongoTemplate.find(new Query(Criteria.where("book.$id").is(deletableBook.getId())), Comment.class);
+        List<Comment> comments = mongoTemplate.find(new Query(Criteria.where("book.$id").is(new ObjectId(deletableBook.getId()))), Comment.class);
         assertThat(comments).isEmpty();
         assertThat(books).isEmpty();
     }
