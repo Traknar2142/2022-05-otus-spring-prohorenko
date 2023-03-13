@@ -10,7 +10,8 @@
         </preConditions>
         <insert tableName="t_user">
             <column name="login" value="user"/>
-            <column name="password" value="1234"/>
+            <!--Пароль: 1234 -->
+            <column name="password" value="$2a$10$X15PERxQ69txKx9n1DzkSeeNDa8P0PBvDZf74Nuh.8TqpMK1Mq9nu"/>
             <column name="role" value="USER"/>
         </insert>
     </changeSet>

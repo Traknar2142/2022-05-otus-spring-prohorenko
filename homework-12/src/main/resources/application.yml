@@ -17,3 +17,5 @@ spring:
       hibernate:
         default_schema: homework
         format_sql: true
+  #main:
+   # allow-circular-references: true
