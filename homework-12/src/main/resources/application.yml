@@ -15,4 +15,5 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        default_schema: homework
         format_sql: true
