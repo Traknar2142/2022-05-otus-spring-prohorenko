@@ -12,5 +12,7 @@
     <include file="db/changelog/data/t_book_insert_data_test.xml"/>
     <include file="db/changelog/t_comment.xml"/>
     <include file="db/changelog/data/t_comment_insert_data_test.xml"/>
+    <include file="db/changelog/t_user.xml"/>
+    <include file="db/changelog/data/t_user_insert_data.xml"/>
 
 </databaseChangeLog>
