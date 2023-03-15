@@ -1,0 +1,18 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="t_user_insert_data" author="vvprokhorenko">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="t_user"/>
+        </preConditions>
+        <insert tableName="t_user">
+            <column name="login" value="user"/>
+            <!--Пароль: 1234 -->
+            <column name="password" value="$2a$10$X15PERxQ69txKx9n1DzkSeeNDa8P0PBvDZf74Nuh.8TqpMK1Mq9nu"/>
+            <column name="role" value="USER"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
