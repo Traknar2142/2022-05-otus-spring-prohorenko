@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.otus.homework.enums.Authority;
 
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -19,8 +20,10 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .antMatchers("/", "/add", "/edit", "/list").authenticated()
-                        .anyRequest().permitAll()
+                        .antMatchers("/", "/list").hasAnyAuthority(Authority.READ.name())
+                        .antMatchers("/add").hasAnyAuthority(Authority.CREATE.name())
+                        .antMatchers("/edit").hasAnyAuthority(Authority.UPDATE.name())
+                        .anyRequest().hasAnyAuthority(Authority.DELETE.name())
                 ).formLogin();
         return http.build();
     }
