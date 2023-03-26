@@ -40,12 +40,15 @@ public class JobConfig {
     private MongoOperations mongoOperations;
 
     private static final String QUERY =
-            "select t_book.id, title, author_id, genre_id, t_author.name as author_name, t_genre.name as genre_name " +
-            "from t_book " +
-            "left join t_author " +
-            "on t_book.author_id = t_author.id " +
-            "left join t_genre " +
-            "on t_book.genre_id = t_genre.id ";
+            "SELECT t_book.id, title, author_id, genre_id, t_author.name as author_name, t_genre.name as genre_name " +
+            "FROM t_book " +
+            "LEFT JOIN t_author " +
+            "ON t_book.author_id = t_author.id " +
+            "LEFT JOIN t_genre " +
+            "ON t_book.genre_id = t_genre.id ";
+
+    private static final int CHUNK_SIZE = 1;
+
     @Bean
     public JdbcCursorItemReader<Book> h2Reader(DataSource dataSource) {
         JdbcCursorItemReader<Book> reader = new JdbcCursorItemReader<>();
@@ -81,7 +84,7 @@ public class JobConfig {
     public Step transferDataStep(ItemReader<Book> h2Reader,
                                  ItemProcessor<Book, Document> processor, ItemWriter<Document> mongoWriter) {
         return stepBuilderFactory.get("transferDataStep")
-                .<Book, Document>chunk(5)
+                .<Book, Document>chunk(CHUNK_SIZE)
                 .reader(h2Reader)
                 .processor(processor)
                 .writer(mongoWriter)
