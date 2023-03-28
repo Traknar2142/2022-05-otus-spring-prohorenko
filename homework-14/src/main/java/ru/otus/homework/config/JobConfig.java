@@ -8,9 +8,6 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.data.MongoItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +15,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Book;
-import ru.otus.homework.rowmapper.BookRowMapper;
+import ru.otus.homework.model.Genre;
 import ru.otus.homework.service.BookConvertationService;
+import ru.otus.homework.writer.AuthorItemWriter;
+import ru.otus.homework.writer.BookMongoItemWriter;
+import ru.otus.homework.writer.GenreItemWriter;
 
 import javax.sql.DataSource;
 
@@ -39,55 +40,93 @@ public class JobConfig {
     @Autowired
     private MongoOperations mongoOperations;
 
-    private static final String QUERY =
-            "SELECT t_book.id, title, author_id, genre_id, t_author.name as author_name, t_genre.name as genre_name " +
-            "FROM t_book " +
-            "LEFT JOIN t_author " +
-            "ON t_book.author_id = t_author.id " +
-            "LEFT JOIN t_genre " +
-            "ON t_book.genre_id = t_genre.id ";
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     private static final int CHUNK_SIZE = 1;
 
     @Bean
-    public JdbcCursorItemReader<Book> h2Reader(DataSource dataSource) {
+    public JdbcCursorItemReader<Book> bookReader() {
         JdbcCursorItemReader<Book> reader = new JdbcCursorItemReader<>();
         reader.setDataSource(dataSource);
-        reader.setSql(QUERY);
-        reader.setRowMapper(new BookRowMapper());
+        reader.setSql("SELECT t_book.id, title, author_id, genre_id FROM t_book");
+        reader.setRowMapper(new BeanPropertyRowMapper<>(Book.class));
         return reader;
     }
 
     @Bean
-    public MongoItemWriter<Document> mongoWriter(MongoTemplate mongoTemplate) {
-        MongoItemWriter<Document> writer = new MongoItemWriter<>();
-        writer.setCollection("books");
-        writer.setTemplate(mongoTemplate);
-        return writer;
+    public JdbcCursorItemReader<Genre> genreReader() {
+        JdbcCursorItemReader<Genre> reader = new JdbcCursorItemReader<>();
+        reader.setDataSource(dataSource);
+        reader.setSql("SELECT t_genre.id, t_genre.name FROM t_genre");
+        reader.setRowMapper(new BeanPropertyRowMapper<>(Genre.class));
+        return reader;
     }
 
     @Bean
-    public Job transferDataJob(Step transferDataStep) {
+    public JdbcCursorItemReader<Author> authorReader() {
+        JdbcCursorItemReader<Author> reader = new JdbcCursorItemReader<>();
+        reader.setDataSource(dataSource);
+        reader.setSql("SELECT t_author.id, t_author.name FROM t_author");
+        reader.setRowMapper(new BeanPropertyRowMapper<>(Author.class));
+        return reader;
+    }
+
+    @Bean
+    public AuthorItemWriter authorItemWriter(){
+        return new AuthorItemWriter(mongoTemplate);
+    }
+
+    @Bean
+    public GenreItemWriter genreItemWriter(){
+        return new GenreItemWriter(mongoTemplate);
+    }
+
+    @Bean
+    public BookMongoItemWriter bookMongoItemWriter(){
+        return new BookMongoItemWriter(mongoTemplate);
+    }
+
+    @Bean
+    public Job transferDataJob(ItemProcessor<Book, Document> processor) {
         return jobBuilderFactory.get("transferDataJob")
                 .incrementer(new RunIdIncrementer())
-                .flow(transferDataStep)
-                .end()
+                .start(authorStep())
+                .next(genreStep())
+                .next(bookStep(processor))
                 .build();
     }
 
     @Bean
     public ItemProcessor<Book, Document> processor(BookConvertationService convertationService) {
-        return convertationService::convertToDoc;
+        return convertationService::process;
     }
 
     @Bean
-    public Step transferDataStep(ItemReader<Book> h2Reader,
-                                 ItemProcessor<Book, Document> processor, ItemWriter<Document> mongoWriter) {
+    public Step authorStep() {
+        return stepBuilderFactory.get("authorStep")
+                .<Author, Author>chunk(10)
+                .reader(authorReader())
+                .writer(authorItemWriter())
+                .build();
+    }
+
+    @Bean
+    public Step genreStep() {
+        return stepBuilderFactory.get("genreStep")
+                .<Genre, Genre>chunk(10)
+                .reader(genreReader())
+                .writer(genreItemWriter())
+                .build();
+    }
+
+    @Bean
+    public Step bookStep(ItemProcessor<Book, Document> processor) {
         return stepBuilderFactory.get("transferDataStep")
                 .<Book, Document>chunk(CHUNK_SIZE)
-                .reader(h2Reader)
+                .reader(bookReader())
                 .processor(processor)
-                .writer(mongoWriter)
+                .writer(bookMongoItemWriter())
                 .build();
     }
 }

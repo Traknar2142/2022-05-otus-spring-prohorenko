@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Author {
-    private Long id;
+    private String id;
 
     private String name;
 
-    public Author(Long id, String name) {
+    public Author(String id, String name) {
         this.id = id;
         this.name = name;
     }

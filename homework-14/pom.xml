@@ -48,10 +48,10 @@
             <artifactId>liquibase-core</artifactId>
         </dependency>
 
-        <dependency>
+<!--        <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>

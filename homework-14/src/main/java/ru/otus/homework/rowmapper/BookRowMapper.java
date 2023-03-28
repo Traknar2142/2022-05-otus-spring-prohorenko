@@ -1,3 +1,4 @@
+/*
 package ru.otus.homework.rowmapper;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -29,3 +30,4 @@ public class BookRowMapper implements RowMapper<Book> {
         return book;
     }
 }
+*/

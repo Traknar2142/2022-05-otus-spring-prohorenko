@@ -6,7 +6,7 @@ spring:
     change-log: classpath:/db/changelog/db.changelog-master.xml
   batch:
     job:
-      enabled: false
+      enabled: true
   shell:
     interactive:
       enabled: true
@@ -18,7 +18,7 @@ spring:
   data:
     mongodb:
       host: localhost
-      port: 0
+      port: 7071
       database: lib
 
   datasource:
