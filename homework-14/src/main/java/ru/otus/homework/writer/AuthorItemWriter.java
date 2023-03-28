@@ -24,7 +24,6 @@ public class AuthorItemWriter implements ItemWriter<Author> {
             document.put("_id", id);
             document.put("name", author.getName());
             mongoTemplate.insert(document, "author");
-            author.setId(id.toHexString());
         }
     }
 }

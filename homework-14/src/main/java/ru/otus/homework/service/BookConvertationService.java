@@ -9,14 +9,21 @@ import ru.otus.homework.model.Book;
 public class BookConvertationService {
 
     public Document process(Book book) {
-        Document document = new Document();
-        ObjectId id = new ObjectId();
-        document.put("_id", id);
-        document.put("title", book.getTitle());
-        document.put("author_id", book.getAuthor().getId());
-        document.put("genre_id", book.getGenre().getId());
+        Document bookDoc = new Document();
+        bookDoc.put("title", book.getTitle());
 
-        return document;
+        Document author = new Document();
+        author.put("_id", new ObjectId());
+        author.put("name", book.getAuthor().getName());
+
+        Document genre = new Document();
+        genre.put("_id", new ObjectId());
+        genre.put("name", book.getGenre().getName());
+
+
+        bookDoc.put("author", author);
+        bookDoc.put("genre", genre);
+        return bookDoc;
     }
 }
 

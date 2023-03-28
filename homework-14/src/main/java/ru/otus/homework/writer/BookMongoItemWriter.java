@@ -1,13 +1,15 @@
 package ru.otus.homework.writer;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import ru.otus.homework.model.Author;
-import ru.otus.homework.model.Genre;
+import org.springframework.data.mongodb.core.query.Query;
+import ru.otus.homework.model.MAuthor;
+import ru.otus.homework.model.MGenre;
 
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 public class BookMongoItemWriter implements ItemWriter<Document> {
 
@@ -18,16 +20,24 @@ public class BookMongoItemWriter implements ItemWriter<Document> {
     }
 
     @Override
-    public void write(List<? extends Document> documents) throws Exception {
+    public void write(List<? extends Document> documents) {
         for (Document document : documents) {
-            String authorId = document.getString("author_id");
-            String genreId = document.getString("genre_id");
+            Document author = (Document) document.get("author");
 
-            Author author = mongoTemplate.findById(new ObjectId(authorId), Author.class);
-            Genre genre = mongoTemplate.findById(new ObjectId(genreId), Genre.class);
+            Document genre = (Document) document.get("genre");
 
-            document.put("author", new Document("_id", author.getId()).append("name", author.getName()));
-            document.put("genre", new Document("_id", genre.getId()).append("name", genre.getName()));
+            Query authorQuery = new Query();
+            authorQuery.addCriteria(where("name").is(author.getString("name")));
+
+            Query genreQuery = new Query();
+            genreQuery.addCriteria(where("name").is(genre.getString("name")));
+
+            MAuthor mAuthor = mongoTemplate.findOne(authorQuery, MAuthor.class);
+
+            MGenre mGenre = mongoTemplate.findOne(genreQuery, MGenre.class);
+
+            document.put("author", mAuthor);
+            document.put("genre", mGenre);
             mongoTemplate.insert(document, "book");
         }
     }

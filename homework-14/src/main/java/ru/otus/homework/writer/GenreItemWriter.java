@@ -23,7 +23,6 @@ public class GenreItemWriter implements ItemWriter<Genre> {
             document.put("_id", id);
             document.put("name", genre.getName());
             mongoTemplate.insert(document, "genre");
-            genre.setId(id.toHexString());
         }
     }
 }
