@@ -3,9 +3,7 @@ package ru.otus.homework.service;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.cash.IdCashService;
-import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Genre;
-import ru.otus.homework.model.MAuthor;
 import ru.otus.homework.model.MGenre;
 
 @Service

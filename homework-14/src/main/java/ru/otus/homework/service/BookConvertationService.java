@@ -18,31 +18,22 @@ public class BookConvertationService {
     public MBook process(Book book) {
         MBook mBook = new MBook();
         mBook.setTitle(book.getTitle());
-        //bookDoc.put("title", book.getTitle());
 
         MAuthor mAuthor = new MAuthor();
 
         String key = book.getAuthor().getClass().getName() +
                 book.getAuthor().getId().toString();
 
-        mAuthor.setId(idCashService.pop(key));
+        mAuthor.setId(idCashService.pull(key));
         mAuthor.setName(book.getAuthor().getName());
-        //author.put("_id", new ObjectId());
-        //author.put("name", book.getAuthor().getName());
 
         MGenre mGenre = new MGenre();
 
         key = book.getGenre().getClass().getName() +
                 book.getGenre().getId().toString();
 
-        mGenre.setId(idCashService.pop(key));
+        mGenre.setId(idCashService.pull(key));
         mGenre.setName(book.getGenre().getName());
-        //genre.put("_id", new ObjectId());
-        //genre.put("name", book.getGenre().getName());
-
-
-        //bookDoc.put("author", author);
-        //bookDoc.put("genre", genre);
 
         mBook.setAuthor(mAuthor);
         mBook.setGenre(mGenre);

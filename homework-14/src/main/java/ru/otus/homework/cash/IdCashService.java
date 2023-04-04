@@ -17,7 +17,7 @@ public class IdCashService {
         idCash.put(key,value);
     }
 
-    public String pop(String key){
+    public String pull(String key){
         return idCash.remove(key);
     }
 }
