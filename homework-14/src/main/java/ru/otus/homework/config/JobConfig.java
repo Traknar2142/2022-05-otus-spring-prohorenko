@@ -1,6 +1,5 @@
 package ru.otus.homework.config;
 
-import org.bson.Document;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -8,6 +7,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.data.MongoItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,11 +18,13 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Book;
 import ru.otus.homework.model.Genre;
+import ru.otus.homework.model.MAuthor;
+import ru.otus.homework.model.MBook;
+import ru.otus.homework.model.MGenre;
 import ru.otus.homework.rowmapper.BookRowMapper;
+import ru.otus.homework.service.AuthorConvertationService;
 import ru.otus.homework.service.BookConvertationService;
-import ru.otus.homework.writer.AuthorItemWriter;
-import ru.otus.homework.writer.BookMongoItemWriter;
-import ru.otus.homework.writer.GenreItemWriter;
+import ru.otus.homework.service.GenreComvertationService;
 
 import javax.sql.DataSource;
 
@@ -57,6 +59,48 @@ public class JobConfig {
     private static final int CHUNK_SIZE = 1;
 
     @Bean
+    public Job transferDataJob(ItemProcessor<Book, MBook> bookProcessor,
+                               ItemProcessor<Author, MAuthor> authorProcessor,
+                               ItemProcessor<Genre, MGenre> genreProcessor) {
+        return jobBuilderFactory.get("transferDataJob")
+                .incrementer(new RunIdIncrementer())
+                .start(authorStep(authorProcessor))
+                .next(genreStep(genreProcessor))
+                .next(bookStep(bookProcessor))
+                .build();
+    }
+
+    @Bean
+    public Step authorStep(ItemProcessor<Author, MAuthor> authorProcessor) {
+        return stepBuilderFactory.get("authorStep")
+                .<Author, MAuthor>chunk(CHUNK_SIZE)
+                .reader(authorReader())
+                .processor(authorProcessor)
+                .writer(authorItemWriter())
+                .build();
+    }
+
+    @Bean
+    public Step genreStep(ItemProcessor<Genre, MGenre> authorProcessor) {
+        return stepBuilderFactory.get("genreStep")
+                .<Genre, MGenre>chunk(CHUNK_SIZE)
+                .reader(genreReader())
+                .processor(authorProcessor)
+                .writer(genreItemWriter())
+                .build();
+    }
+
+    @Bean
+    public Step bookStep(ItemProcessor<Book, MBook> bookProcessor) {
+        return stepBuilderFactory.get("transferDataStep")
+                .<Book, MBook>chunk(CHUNK_SIZE)
+                .reader(bookReader())
+                .processor(bookProcessor)
+                .writer(bookItemWriter())
+                .build();
+    }
+
+    @Bean
     public JdbcCursorItemReader<Book> bookReader() {
         JdbcCursorItemReader<Book> reader = new JdbcCursorItemReader<>();
         reader.setDataSource(dataSource);
@@ -84,60 +128,39 @@ public class JobConfig {
     }
 
     @Bean
-    public AuthorItemWriter authorItemWriter(){
-        return new AuthorItemWriter(mongoTemplate);
+    public MongoItemWriter<MAuthor> authorItemWriter() {
+        MongoItemWriter<MAuthor> mAuthorMongoItemWriter = new MongoItemWriter<>();
+        mAuthorMongoItemWriter.setTemplate(mongoOperations);
+
+        return mAuthorMongoItemWriter;
     }
 
     @Bean
-    public GenreItemWriter genreItemWriter(){
-        return new GenreItemWriter(mongoTemplate);
+    public MongoItemWriter<MGenre> genreItemWriter() {
+        MongoItemWriter<MGenre> mGenreMongoItemWriter = new MongoItemWriter<>();
+        mGenreMongoItemWriter.setTemplate(mongoOperations);
+        return mGenreMongoItemWriter;
     }
 
     @Bean
-    public BookMongoItemWriter bookMongoItemWriter(){
-        return new BookMongoItemWriter(mongoTemplate);
+    public MongoItemWriter<MBook> bookItemWriter() {
+        MongoItemWriter<MBook> mBookMongoItemWriter = new MongoItemWriter<>();
+        mBookMongoItemWriter.setTemplate(mongoOperations);
+        return mBookMongoItemWriter;
     }
 
     @Bean
-    public Job transferDataJob(ItemProcessor<Book, Document> processor) {
-        return jobBuilderFactory.get("transferDataJob")
-                .incrementer(new RunIdIncrementer())
-                .start(authorStep())
-                .next(genreStep())
-                .next(bookStep(processor))
-                .build();
+    public ItemProcessor<Author, MAuthor> authorProcessor(AuthorConvertationService authorConvertationService) {
+        return authorConvertationService::process;
     }
 
     @Bean
-    public ItemProcessor<Book, Document> processor(BookConvertationService convertationService) {
+    public ItemProcessor<Genre, MGenre> genreProcessor(GenreComvertationService genreComvertationService) {
+        return genreComvertationService::process;
+    }
+
+    @Bean
+    public ItemProcessor<Book, MBook> bookProcessor(BookConvertationService convertationService) {
         return convertationService::process;
-    }
-
-    @Bean
-    public Step authorStep() {
-        return stepBuilderFactory.get("authorStep")
-                .<Author, Author>chunk(CHUNK_SIZE)
-                .reader(authorReader())
-                .writer(authorItemWriter())
-                .build();
-    }
-
-    @Bean
-    public Step genreStep() {
-        return stepBuilderFactory.get("genreStep")
-                .<Genre, Genre>chunk(CHUNK_SIZE)
-                .reader(genreReader())
-                .writer(genreItemWriter())
-                .build();
-    }
-
-    @Bean
-    public Step bookStep(ItemProcessor<Book, Document> processor) {
-        return stepBuilderFactory.get("transferDataStep")
-                .<Book, Document>chunk(CHUNK_SIZE)
-                .reader(bookReader())
-                .processor(processor)
-                .writer(bookMongoItemWriter())
-                .build();
     }
 }
