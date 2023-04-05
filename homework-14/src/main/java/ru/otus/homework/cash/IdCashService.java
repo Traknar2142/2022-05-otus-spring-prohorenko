@@ -17,7 +17,7 @@ public class IdCashService {
         idCash.put(key,value);
     }
 
-    public String pull(String key){
-        return idCash.remove(key);
+    public String get(String key){
+        return idCash.get(key);
     }
 }

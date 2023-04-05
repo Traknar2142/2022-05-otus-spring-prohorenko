@@ -28,5 +28,15 @@
             <column name="author_id" value="4"/>
             <column name="genre_id" value="4"/>
         </insert>
+        <insert tableName="t_book">
+            <column name="title" value="Custom book1"/>
+            <column name="author_id" value="4"/>
+            <column name="genre_id" value="4"/>
+        </insert>
+        <insert tableName="t_book">
+            <column name="title" value="Custom book2"/>
+            <column name="author_id" value="4"/>
+            <column name="genre_id" value="4"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

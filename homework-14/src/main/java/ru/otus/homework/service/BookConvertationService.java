@@ -24,7 +24,7 @@ public class BookConvertationService {
         String key = book.getAuthor().getClass().getName() +
                 book.getAuthor().getId().toString();
 
-        mAuthor.setId(idCashService.pull(key));
+        mAuthor.setId(idCashService.get(key));
         mAuthor.setName(book.getAuthor().getName());
 
         MGenre mGenre = new MGenre();
@@ -32,7 +32,7 @@ public class BookConvertationService {
         key = book.getGenre().getClass().getName() +
                 book.getGenre().getId().toString();
 
-        mGenre.setId(idCashService.pull(key));
+        mGenre.setId(idCashService.get(key));
         mGenre.setName(book.getGenre().getName());
 
         mBook.setAuthor(mAuthor);
