@@ -9,10 +9,16 @@
             <tableExists tableName="t_user"/>
         </preConditions>
         <insert tableName="t_user">
-            <column name="login" value="entryUser"/>
+            <column name="login" value="user"/>
             <!--Пароль: 1234 -->
             <column name="password" value="$2a$10$X15PERxQ69txKx9n1DzkSeeNDa8P0PBvDZf74Nuh.8TqpMK1Mq9nu"/>
             <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="t_user">
+            <column name="login" value="admin"/>
+            <!--Пароль: 1234 -->
+            <column name="password" value="$2a$10$X15PERxQ69txKx9n1DzkSeeNDa8P0PBvDZf74Nuh.8TqpMK1Mq9nu"/>
+            <column name="role" value="ADMIN"/>
         </insert>
     </changeSet>
 </databaseChangeLog>
