@@ -1,0 +1,19 @@
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+    liquibase-schema: homework
+    default-schema: homework
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=homework
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: homework
+        format_sql: true
