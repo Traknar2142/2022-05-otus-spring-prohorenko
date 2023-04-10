@@ -1,0 +1,42 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="t_book_insert_data" author="vvprokhorenko">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="t_book"/>
+        </preConditions>
+        <insert tableName="t_book">
+            <column name="title" value="1984"/>
+            <column name="author_id" value="1"/>
+            <column name="genre_id" value="1"/>
+        </insert>
+        <insert tableName="t_book">
+            <column name="title" value="Fahrenheit 451"/>
+            <column name="author_id" value="2"/>
+            <column name="genre_id" value="2"/>
+        </insert>
+        <insert tableName="t_book">
+            <column name="title" value="The Time Machine"/>
+            <column name="author_id" value="3"/>
+            <column name="genre_id" value="3"/>
+        </insert>
+        <insert tableName="t_book">
+            <column name="title" value="The Castle"/>
+            <column name="author_id" value="4"/>
+            <column name="genre_id" value="4"/>
+        </insert>
+        <insert tableName="t_book">
+            <column name="title" value="Custom book1"/>
+            <column name="author_id" value="4"/>
+            <column name="genre_id" value="4"/>
+        </insert>
+        <insert tableName="t_book">
+            <column name="title" value="Custom book2"/>
+            <column name="author_id" value="4"/>
+            <column name="genre_id" value="4"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
