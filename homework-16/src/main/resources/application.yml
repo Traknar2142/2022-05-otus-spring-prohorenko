@@ -16,3 +16,25 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  jmx:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    logfile:
+      enabled: true
+  health:
+    defaults:
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+  file:
+    name: "my-log.log"
