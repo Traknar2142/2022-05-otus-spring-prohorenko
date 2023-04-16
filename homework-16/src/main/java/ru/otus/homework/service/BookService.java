@@ -14,4 +14,5 @@ public interface BookService {
     Book getById(Long id);
     Book updateBook(Book book);
     void deleteBook(Long id);
+    long getCountOfBooks();
 }

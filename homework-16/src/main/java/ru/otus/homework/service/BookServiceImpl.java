@@ -71,6 +71,12 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
+    @Transactional
+    @Override
+    public long getCountOfBooks(){
+        return bookRepository.count();
+    }
+
     private void updateGenreForBook(Book book) {
         if (book.getGenre() != null) {
             Genre genreByName = getOrSaveGenre(book.getGenre().getName());

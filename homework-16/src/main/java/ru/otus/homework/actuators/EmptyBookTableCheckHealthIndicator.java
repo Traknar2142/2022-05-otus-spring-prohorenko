@@ -4,17 +4,14 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.stereotype.Component;
-import ru.otus.homework.domain.Book;
-import ru.otus.homework.repository.BookRepository;
-
-import java.util.List;
+import ru.otus.homework.service.BookService;
 
 @Component
 public class EmptyBookTableCheckHealthIndicator implements HealthIndicator {
-    private final BookRepository bookRepository;
+    private final BookService bookService;
 
-    public EmptyBookTableCheckHealthIndicator(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    public EmptyBookTableCheckHealthIndicator(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @Override
@@ -33,7 +30,7 @@ public class EmptyBookTableCheckHealthIndicator implements HealthIndicator {
     }
 
     private boolean isBookRepoEmpty() {
-        List<Book> all = bookRepository.findAll();
-        return all.isEmpty();
+        long countOfBooks = bookService.getCountOfBooks();
+        return countOfBooks == 0;
     }
 }
