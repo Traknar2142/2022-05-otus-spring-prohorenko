@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import ru.otus.homework.PostgresTestContainerInit;
 import ru.otus.homework.domain.Comment;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @DisplayName("Репозиторий комментариев должен: ")
 @DataJpaTest
-public class CommentRepositoryTest {
+public class CommentRepositoryTest extends PostgresTestContainerInit {
     @Autowired
     private CommentRepository commentRepository;
 

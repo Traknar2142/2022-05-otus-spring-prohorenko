@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import ru.otus.homework.PostgresTestContainerInit;
 import ru.otus.homework.domain.Author;
 
 import java.util.Optional;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @DisplayName("Репозиторий авторов должен: ")
 @DataJpaTest
-public class AuthorRepositoryTest {
+public class AuthorRepositoryTest extends PostgresTestContainerInit {
     @Autowired
     private AuthorRepository authorRepository;
 
