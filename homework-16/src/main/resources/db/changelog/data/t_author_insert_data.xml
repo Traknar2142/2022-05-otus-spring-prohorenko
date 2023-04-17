@@ -1,0 +1,24 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="t_author_insert_data" author="vvprokhorenko">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="t_author"/>
+        </preConditions>
+        <insert tableName="t_author">
+            <column name="name" value="George Orwell"/>
+        </insert>
+        <insert tableName="t_author">
+            <column name="name" value="Raymond Douglas Bradbury"/>
+        </insert>
+        <insert tableName="t_author">
+            <column name="name" value="H. G. Wells"/>
+        </insert>
+        <insert tableName="t_author">
+            <column name="name" value="Franz Kafka"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
