@@ -71,7 +71,6 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
-    @Transactional
     @Override
     public long getCountOfBooks(){
         return bookRepository.count();
