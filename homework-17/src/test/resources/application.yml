@@ -6,3 +6,6 @@ spring:
   shell:
     interactive:
       enabled: false
+
+preliquibase:
+  enabled: false

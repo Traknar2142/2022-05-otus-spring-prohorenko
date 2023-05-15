@@ -8,6 +8,11 @@ public abstract class PostgresTestContainerInit {
     private static final PostgreSQLContainer<?> POSTGRE_SQL_CONTAINER = new PostgreSQLContainer<>("postgres:12");
 
     static {
+        POSTGRE_SQL_CONTAINER
+                .withEnv("POSTGRES_DB", "testdb")
+                .withEnv("POSTGRES_USER", "testuser")
+                .withEnv("POSTGRES_PASSWORD", "testpassword");
+
         POSTGRE_SQL_CONTAINER.start();
     }
 
